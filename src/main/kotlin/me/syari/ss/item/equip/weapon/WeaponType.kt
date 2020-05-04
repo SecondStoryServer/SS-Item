@@ -1,4 +1,4 @@
-package me.syari.ss.item.weapon
+package me.syari.ss.item.equip.weapon
 
 enum class WeaponType(
     val id: String, val display: String

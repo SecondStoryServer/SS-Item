@@ -1,13 +1,15 @@
 package me.syari.ss.item
 
+import me.syari.ss.core.auto.OnEnable
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main: JavaPlugin() {
     companion object {
-        lateinit var plugin: JavaPlugin
+        internal lateinit var itemPlugin: JavaPlugin
     }
 
     override fun onEnable() {
-        plugin = this
+        itemPlugin = this
+        OnEnable.register(ConfigLoader)
     }
 }
