@@ -1,3 +1,7 @@
 package me.syari.ss.item.general
 
-interface GeneralItem
+import me.syari.ss.core.item.CustomItemStack
+
+interface GeneralItem {
+    val itemStack: CustomItemStack
+}

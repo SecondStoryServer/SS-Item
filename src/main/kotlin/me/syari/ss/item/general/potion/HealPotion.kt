@@ -1,10 +1,14 @@
 package me.syari.ss.item.general.potion
 
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
+import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.entity.Player
 
 data class HealPotion(val size: Size): GeneralItem {
+    override val itemStack: CustomItemStack
+        get() = TODO("Not yet implemented")
+
     fun use(player: Player){
         val playerStatus = player.status
         val maxHealth = playerStatus.maxHealth
