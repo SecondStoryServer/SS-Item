@@ -1,5 +1,6 @@
 package me.syari.ss.item
 
+import me.syari.ss.core.auto.Event
 import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.item.custom.CustomItem
 import me.syari.ss.item.custom.register.Register
@@ -16,7 +17,12 @@ class Main: JavaPlugin() {
 
     override fun onEnable() {
         itemPlugin = this
-        OnEnable.register(ConfigLoader, CustomItem)
+        OnEnable.register(
+            ConfigLoader, CustomItem
+        )
+        Event.register(this,
+            EventListener
+        )
         Register.add(
             HealPotion
         )
