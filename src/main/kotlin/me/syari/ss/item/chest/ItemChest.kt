@@ -2,16 +2,17 @@ package me.syari.ss.item.chest
 
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
+import me.syari.ss.item.compass.CompassItem
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.inventory.ItemStack
 
 interface ItemChest {
     val uuidPlayer: UUIDPlayer
-    val sizeColumnName: String
-    val defaultMaxPage: Int
+    val sizeColumnName: String?
+    val defaultMaxPage: Int?
 
-    var maxPage: Int
+    var maxPage: Int?
         get() = DatabaseConnector.Chest.MaxPage.get(uuidPlayer, this) ?: defaultMaxPage
         set(value) {
             DatabaseConnector.Chest.MaxPage.set(uuidPlayer, this, value)
@@ -85,11 +86,35 @@ interface ItemChest {
         }
     }
 
+    data class Compass(override val uuidPlayer: UUIDPlayer): ItemChest {
+        override val sizeColumnName: String? = null
+        override val defaultMaxPage: Int? = null
+        private val itemList = mutableListOf<CompassItem>()
+
+        init {
+            // Load Item From SQL
+        }
+
+        fun add(item: CompassItem) {
+            itemList.add(item)
+            // Add Item To SQL
+        }
+
+        fun remove(item: CompassItem) {
+            itemList.remove(item)
+            // Remove Item From SQL
+        }
+
+        fun getList(page: Int): List<CompassItem>? {
+            return itemList.slice(page, maxPage)
+        }
+    }
+
     private companion object {
-        private fun <T> List<T>.slice(page: Int, maxPage: Int): List<T>? {
+        private fun <T> List<T>.slice(page: Int, maxPage: Int?): List<T>? {
             return when {
                 page < 1 -> slice(1, maxPage)
-                maxPage < page -> null
+                maxPage != null && maxPage < page -> null
                 else -> slice(((page - 1) * 27) until (page * 27))
             }
         }
