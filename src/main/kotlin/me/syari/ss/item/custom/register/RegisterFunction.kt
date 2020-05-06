@@ -14,6 +14,9 @@ interface RegisterFunction {
 
         fun add(vararg registerFunction: RegisterFunction) {
             list.addAll(registerFunction)
+            registerFunction.forEach {
+                it.register()
+            }
         }
     }
 }
