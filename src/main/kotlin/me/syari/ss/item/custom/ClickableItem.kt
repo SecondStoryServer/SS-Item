@@ -6,7 +6,8 @@ interface ClickableItem {
     fun onClick(player: Player, clickType: Type)
 
     enum class Type {
-        Right, Left;
+        Right,
+        Left;
 
         val isRight get() = this == Right
         val isLeft get() = this == Left

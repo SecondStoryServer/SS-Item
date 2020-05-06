@@ -21,8 +21,7 @@ class Main: JavaPlugin() {
             HealPotion
         )
         RegisterList.add(
-            GeneralItem,
-            EquipItem
+            GeneralItem, EquipItem
         )
     }
 }

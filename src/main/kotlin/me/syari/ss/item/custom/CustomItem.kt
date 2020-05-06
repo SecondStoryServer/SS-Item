@@ -17,11 +17,7 @@ interface CustomItem {
 
     val itemStack: CustomItemStack
         get() = CustomItemStack.create(
-            material,
-            display,
-            "&6アイテムタイプ: $itemType",
-            "",
-            *description.lines().map { "&7$it" }.toTypedArray()
+            material, display, "&6アイテムタイプ: $itemType", "", *description.lines().map { "&7$it" }.toTypedArray()
         )
 
     companion object: OnEnable {
@@ -45,7 +41,7 @@ interface CustomItem {
             reload()
         }
 
-        fun reload(){
+        fun reload() {
             RegisterList.clearAll()
             Register.registerAll()
         }

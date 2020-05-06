@@ -6,11 +6,11 @@ import me.syari.ss.item.custom.CustomItem
 open class RegisterList<T: CustomItem> {
     private val idToList = mutableMapOf<String, T>()
 
-    fun clear(){
+    fun clear() {
         idToList.clear()
     }
 
-    fun register(id: String, item: T){
+    fun register(id: String, item: T) {
         idToList[id] = item
     }
 
@@ -36,13 +36,13 @@ open class RegisterList<T: CustomItem> {
             return null
         }
 
-        fun clearAll(){
+        fun clearAll() {
             list.forEach {
                 it.clear()
             }
         }
 
-        fun add(vararg registerList: RegisterList<out CustomItem>){
+        fun add(vararg registerList: RegisterList<out CustomItem>) {
             list.addAll(registerList)
         }
     }

@@ -20,14 +20,14 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
     override val itemStack: CustomItemStack
         get() = super.itemStack.apply {
             editMeta {
-                if(this is PotionMeta){
+                if (this is PotionMeta) {
                     color = Color.RED
                 }
             }
         }
 
     override fun onClick(player: Player, clickType: ClickableItem.Type) {
-        if(clickType.isRight){
+        if (clickType.isRight) {
             val playerStatus = player.status
             val maxHealth = playerStatus.maxHealth
             playerStatus.health += maxHealth * size.healPercent
@@ -43,7 +43,7 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
     }
 
     companion object: Register {
-        override fun register(){
+        override fun register() {
             Size.values().forEach { size ->
                 GeneralItem.register(size.id, size.item)
             }

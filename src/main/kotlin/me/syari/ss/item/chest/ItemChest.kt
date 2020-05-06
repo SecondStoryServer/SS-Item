@@ -46,7 +46,7 @@ interface ItemChest {
 
         fun remove(item: GeneralItem, amount: Int) {
             val totalAmount = itemList.getOrDefault(item, 0) - amount
-            if(totalAmount < 1){
+            if (totalAmount < 1) {
                 itemList.remove(item)
                 // Clear Item From SQL
             } else {
