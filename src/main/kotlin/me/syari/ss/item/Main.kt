@@ -3,8 +3,8 @@ package me.syari.ss.item
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.custom.register.Register
-import me.syari.ss.item.custom.register.RegisterList
+import me.syari.ss.item.custom.register.RegisterFunction
+import me.syari.ss.item.custom.register.ItemRegister
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import me.syari.ss.item.general.potion.HealPotion
@@ -17,17 +17,17 @@ class Main: JavaPlugin() {
 
     override fun onEnable() {
         itemPlugin = this
+        RegisterFunction.add(
+            HealPotion
+        )
+        ItemRegister.add(
+            GeneralItem, EquipItem
+        )
         OnEnable.register(
-            ConfigLoader, CustomItem
+            ConfigLoader
         )
         Event.register(this,
             EventListener
-        )
-        Register.add(
-            HealPotion
-        )
-        RegisterList.add(
-            GeneralItem, EquipItem
         )
     }
 }

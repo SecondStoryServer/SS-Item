@@ -3,8 +3,8 @@ package me.syari.ss.item.custom
 import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
-import me.syari.ss.item.custom.register.Register
-import me.syari.ss.item.custom.register.RegisterList
+import me.syari.ss.item.custom.register.RegisterFunction
+import me.syari.ss.item.custom.register.ItemRegister
 import org.bukkit.Material
 import org.bukkit.persistence.PersistentDataType
 
@@ -20,7 +20,7 @@ interface CustomItem {
             material, display, "&6アイテムタイプ: $itemType", "", *description.lines().map { "&7$it" }.toTypedArray()
         )
 
-    companion object: OnEnable {
+    companion object {
         private const val itemIdPersistentKey = "ss-item-id"
 
         fun getId(item: CustomItemStack): String? {
@@ -28,7 +28,7 @@ interface CustomItem {
         }
 
         fun from(id: String): CustomItem? {
-            return RegisterList.getCustomItem(id)
+            return ItemRegister.getCustomItem(id)
         }
 
         fun from(item: CustomItemStack): CustomItem? {
@@ -37,13 +37,9 @@ interface CustomItem {
             }
         }
 
-        override fun onEnable() {
-            reload()
-        }
-
         fun reload() {
-            RegisterList.clearAll()
-            Register.registerAll()
+            ItemRegister.clearAll()
+            RegisterFunction.registerAll()
         }
     }
 }

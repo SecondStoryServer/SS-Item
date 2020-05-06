@@ -4,7 +4,7 @@ import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.ItemType
-import me.syari.ss.item.custom.register.Register
+import me.syari.ss.item.custom.register.RegisterFunction
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.Color
 import org.bukkit.Material
@@ -42,7 +42,7 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
         val item = HealPotion(this)
     }
 
-    companion object: Register {
+    companion object: RegisterFunction {
         override fun register() {
             Size.values().forEach { size ->
                 GeneralItem.register(size.id, size.item)

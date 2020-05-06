@@ -1,10 +1,10 @@
 package me.syari.ss.item.custom.register
 
-interface Register {
+interface RegisterFunction {
     fun register()
 
     companion object {
-        private val list = mutableSetOf<Register>()
+        private val list = mutableSetOf<RegisterFunction>()
 
         fun registerAll() {
             list.forEach {
@@ -12,8 +12,8 @@ interface Register {
             }
         }
 
-        fun add(vararg register: Register) {
-            list.addAll(register)
+        fun add(vararg registerFunction: RegisterFunction) {
+            list.addAll(registerFunction)
         }
     }
 }

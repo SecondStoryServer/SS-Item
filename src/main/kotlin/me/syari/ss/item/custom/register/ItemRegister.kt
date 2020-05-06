@@ -3,7 +3,7 @@ package me.syari.ss.item.custom.register
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.custom.CustomItem
 
-open class RegisterList<T: CustomItem> {
+open class ItemRegister<T: CustomItem> {
     private val idToList = mutableMapOf<String, T>()
 
     fun clear() {
@@ -25,7 +25,7 @@ open class RegisterList<T: CustomItem> {
     }
 
     companion object {
-        private val list = mutableSetOf<RegisterList<out CustomItem>>()
+        private val list = mutableSetOf<ItemRegister<out CustomItem>>()
 
         fun getCustomItem(id: String): CustomItem? {
             list.forEach { registerList ->
@@ -42,8 +42,8 @@ open class RegisterList<T: CustomItem> {
             }
         }
 
-        fun add(vararg registerList: RegisterList<out CustomItem>) {
-            list.addAll(registerList)
+        fun add(vararg itemRegister: ItemRegister<out CustomItem>) {
+            list.addAll(itemRegister)
         }
     }
 }
