@@ -1,5 +1,6 @@
 package me.syari.ss.item.equip.weapon.melee
 
+import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.equip.weapon.WeaponType
@@ -10,7 +11,8 @@ open class SwordItem(
     override val material: Material,
     override val display: String,
     override val description: String,
-    override val onAttackStatus: Map<StatusType, Float>
+    override val onAttackStatus: Map<StatusType, Float>,
+    override val damageElementType: ElementType?
 ): MeleeItem {
     override val itemType = ItemType.Weapon(WeaponType.Sword)
 }
