@@ -96,8 +96,8 @@ object DatabaseConnector {
                         SELECT ItemID, Amount FROM GeneralItemChest WHERE UUID = '$uuidPlayer';
                     """.trimIndent())
                     while(result.next()){
-                        GeneralItem.getById(result.getString(1))?.let { item ->
-                            map[item] = result.getInt(2)
+                       GeneralItem.from(result.getString(1))?.let { item ->
+                           map[item] = result.getInt(2)
                         }
                     }
                 }

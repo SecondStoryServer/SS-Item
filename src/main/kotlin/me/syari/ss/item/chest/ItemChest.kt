@@ -2,7 +2,6 @@ package me.syari.ss.item.chest
 
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
-import me.syari.ss.item.chest.ItemChest.Companion.slice
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.inventory.ItemStack

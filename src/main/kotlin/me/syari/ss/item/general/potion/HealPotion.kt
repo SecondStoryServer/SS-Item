@@ -2,14 +2,16 @@ package me.syari.ss.item.general.potion
 
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.item.CustomItemStack
+import me.syari.ss.item.custom.ClickableItem
+import me.syari.ss.item.custom.ItemType
+import me.syari.ss.item.custom.register.Register
 import me.syari.ss.item.general.GeneralItem
-import me.syari.ss.item.general.GeneralItem.ItemType
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.PotionMeta
 
-data class HealPotion(val size: Size): GeneralItem {
+data class HealPotion(val size: Size): GeneralItem, ClickableItem {
     override val id = "potion-heal-${size.id}"
     override val material = Material.POTION
     override val display = "&6回復ポーション &b〈${size.display}〉"
@@ -24,10 +26,12 @@ data class HealPotion(val size: Size): GeneralItem {
             }
         }
 
-    fun use(player: Player){
-        val playerStatus = player.status
-        val maxHealth = playerStatus.maxHealth
-        playerStatus.health += maxHealth * size.healPercent
+    override fun onClick(player: Player, clickType: ClickableItem.Type) {
+        if(clickType.isRight){
+            val playerStatus = player.status
+            val maxHealth = playerStatus.maxHealth
+            playerStatus.health += maxHealth * size.healPercent
+        }
     }
 
     enum class Size(val id: String, val display: String, val healPercent: Double, val maxAmount: Int) {
@@ -38,8 +42,8 @@ data class HealPotion(val size: Size): GeneralItem {
         val item = HealPotion(this)
     }
 
-    companion object {
-        fun register(){
+    companion object: Register {
+        override fun register(){
             Size.values().forEach { size ->
                 GeneralItem.register(size.id, size.item)
             }

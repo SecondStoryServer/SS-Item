@@ -1,19 +1,8 @@
 package me.syari.ss.item.equip
 
-interface EquipItem {
-    companion object {
-        private val idToList = mutableMapOf<String, EquipItem>()
+import me.syari.ss.item.custom.CustomItem
+import me.syari.ss.item.custom.register.RegisterList
 
-        fun clear(){
-            idToList.clear()
-        }
-
-        fun register(id: String, item: EquipItem){
-            idToList[id] = item
-        }
-
-        fun getById(id: String): EquipItem? {
-            return idToList[id]
-        }
-    }
+interface EquipItem: CustomItem {
+    companion object: RegisterList<EquipItem>()
 }
