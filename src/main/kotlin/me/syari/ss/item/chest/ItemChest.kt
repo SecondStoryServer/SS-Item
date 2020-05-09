@@ -3,6 +3,7 @@ package me.syari.ss.item.chest
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
 import me.syari.ss.item.compass.CompassItem
+import me.syari.ss.item.compass.CompassItem.Companion.allCompass
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.inventory.ItemStack
@@ -40,20 +41,21 @@ interface ItemChest {
 
         fun add(item: GeneralItem, amount: Int) {
             val totalAmount = itemList.getOrDefault(item, 0) + amount
-            itemList[item] = totalAmount
-            // Add Item To SQL
-            itemStackListCache = null
+            set(item, totalAmount)
         }
 
         fun remove(item: GeneralItem, amount: Int) {
             val totalAmount = itemList.getOrDefault(item, 0) - amount
-            if (totalAmount < 1) {
-                itemList.remove(item)
-                // Clear Item From SQL
+            set(item, totalAmount)
+        }
+
+        fun set(item: GeneralItem, amount: Int){
+            if (0 < amount) {
+                itemList[item] = amount
             } else {
-                itemList[item] = totalAmount
-                // Remove Item From SQL
+                itemList.remove(item)
             }
+            DatabaseConnector.Chest.General.set(uuidPlayer, item, amount)
             itemStackListCache = null
         }
 
@@ -65,23 +67,19 @@ interface ItemChest {
     data class Equip(override val uuidPlayer: UUIDPlayer): ItemChest {
         override val sizeColumnName = "Equip"
         override val defaultMaxPage = 2
-        private val itemList = mutableListOf<EquipItem>()
+        private val itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
 
-        init {
-            // Load Item From SQL
-        }
-
-        fun add(item: EquipItem) {
+        fun add(item: EquipItem.Data) {
             itemList.add(item)
-            // Add Item To SQL
+            DatabaseConnector.Chest.Equip.add(uuidPlayer, item)
         }
 
-        fun remove(item: EquipItem) {
+        fun remove(item: EquipItem.Data) {
             itemList.remove(item)
-            // Remove Item From SQL
+            DatabaseConnector.Chest.Equip.remove(uuidPlayer, item)
         }
 
-        fun getList(page: Int): List<EquipItem>? {
+        fun getList(page: Int): List<EquipItem.Data>? {
             return itemList.slice(page, maxPage)
         }
     }
@@ -89,24 +87,28 @@ interface ItemChest {
     data class Compass(override val uuidPlayer: UUIDPlayer): ItemChest {
         override val sizeColumnName: String? = null
         override val defaultMaxPage: Int? = null
-        private val itemList = mutableListOf<CompassItem>()
+        private val itemList = DatabaseConnector.Chest.Compass.get(uuidPlayer).toMutableSet()
 
-        init {
-            // Load Item From SQL
+        fun has(item: CompassItem): Boolean {
+            return itemList.contains(item)
         }
 
-        fun add(item: CompassItem) {
+        fun add(item: CompassItem): Boolean {
+            if(has(item)) return false
             itemList.add(item)
-            // Add Item To SQL
+            DatabaseConnector.Chest.Compass.add(uuidPlayer, item)
+            return true
         }
 
-        fun remove(item: CompassItem) {
+        fun remove(item: CompassItem): Boolean {
+            if(!has(item)) return false
             itemList.remove(item)
-            // Remove Item From SQL
+            DatabaseConnector.Chest.Compass.remove(uuidPlayer, item)
+            return true
         }
 
-        fun getList(page: Int): List<CompassItem>? {
-            return itemList.slice(page, maxPage)
+        fun getList(page: Int): Map<CompassItem, Boolean>? {
+            return allCompass.slice(page, maxPage)?.associate { it to has(it) }
         }
     }
 
