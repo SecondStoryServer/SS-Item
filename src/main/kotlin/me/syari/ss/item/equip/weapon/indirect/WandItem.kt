@@ -7,7 +7,7 @@ import me.syari.ss.item.equip.weapon.WeaponItem
 import me.syari.ss.item.equip.weapon.WeaponType
 import org.bukkit.Material
 
-open class WandItem(
+data class WandItem(
     override val id: String,
     override val material: Material,
     override val display: String,

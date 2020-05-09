@@ -7,13 +7,13 @@ import me.syari.ss.item.equip.weapon.WeaponItem
 import me.syari.ss.item.equip.weapon.WeaponType
 import org.bukkit.Material
 
-open class BowItem(
+data class BowItem(
     override val id: String,
     override val material: Material,
     override val display: String,
     override val description: String,
     override val onAttackStatus: Map<StatusType, Float>,
     override val damageElementType: ElementType?
-): WeaponItem {
+): WeaponItem{
     override val itemType = ItemType.Weapon(WeaponType.Bow)
 }
