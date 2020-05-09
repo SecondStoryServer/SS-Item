@@ -1,10 +1,9 @@
 package me.syari.ss.item.custom
 
-import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
-import me.syari.ss.item.custom.register.RegisterFunction
 import me.syari.ss.item.custom.register.ItemRegister
+import me.syari.ss.item.custom.register.RegisterFunction
 import org.bukkit.Material
 import org.bukkit.persistence.PersistentDataType
 

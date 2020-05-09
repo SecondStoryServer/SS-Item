@@ -6,9 +6,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 
 data class CompassItem(
-    override val id: String,
-    val teleportToName: String,
-    val teleportTo: Location
+    override val id: String, val teleportToName: String, val teleportTo: Location
 ): GeneralItem {
     override val itemType = ItemType.Compass
     override val material = Material.COMPASS
