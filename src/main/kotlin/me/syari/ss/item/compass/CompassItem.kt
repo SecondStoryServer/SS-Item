@@ -3,7 +3,6 @@ package me.syari.ss.item.compass
 import me.syari.ss.item.custom.CustomItem
 import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.custom.register.ItemRegister
-import me.syari.ss.item.general.GeneralItem
 import org.bukkit.Location
 import org.bukkit.Material
 

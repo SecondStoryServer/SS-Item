@@ -5,7 +5,6 @@ import me.syari.ss.item.DatabaseConnector
 import me.syari.ss.item.compass.CompassItem
 import me.syari.ss.item.compass.CompassItem.Companion.allCompass
 import me.syari.ss.item.equip.EnhancedEquipItem
-import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.inventory.ItemStack
 
