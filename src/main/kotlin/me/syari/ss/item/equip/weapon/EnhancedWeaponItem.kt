@@ -12,25 +12,21 @@ class EnhancedWeaponItem(
 ): EnhancedEquipItem(
     data, enhance, enhancePlus
 ) {
-    val damage = data.damage * enhanceRate
-    val criticalChance = data.criticalChance
+    private val damage = data.damage * enhanceRate
+    private val criticalChance = data.criticalChance
+    override val statusChange = mapOf(
+        StatusType.Attack(data.damageElementType) to ("+$damage" to damage),
+        StatusType.CriticalChance to ("+${criticalChance * 100}%" to criticalChance)
+    )
 
     fun getAttackStatus(player: Player): PlayerStatus {
         val playerStatus = player.status.clone()
-
-        fun addStatusChange(statusType: StatusType, value: Float) {
+        statusChange.forEach { (statusType, value) ->
             playerStatus.add(
-                StatusChange.Cause.Equipment, statusType, value, StatusChange.Type.Add
+                StatusChange.Cause.Equipment, statusType, value.second, StatusChange.Type.Add
             )
         }
-
-        addStatusChange(StatusType.Attack(data.damageElementType), damage)
-        addStatusChange(StatusType.CriticalChance, criticalChance)
         playerStatus.damageElementType = data.damageElementType
         return playerStatus
     }
-
-    override val statusDescription = listOf(
-        "属性" to data.damageElementType.display, "攻撃力" to "+$damage", "クリティカル率" to "+${criticalChance * 100}%"
-    )
 }

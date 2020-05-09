@@ -1,5 +1,6 @@
 package me.syari.ss.item.equip
 
+import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
 import org.bukkit.persistence.PersistentDataType
@@ -7,9 +8,9 @@ import org.bukkit.persistence.PersistentDataType
 open class EnhancedEquipItem(
     open val data: EquipItem, val enhance: Int, var enhancePlus: Int
 ) {
-    open val statusDescription = listOf<Pair<String, String>>()
+    open val statusChange = mapOf<StatusType, Pair<String, Float>>()
 
-    val sumEnhance
+    private val sumEnhance
         get(): Int {
             val sumEnhance = enhance + enhancePlus
             return if (100 < sumEnhance) {
@@ -28,10 +29,10 @@ open class EnhancedEquipItem(
 
     val itemStack: CustomItemStack
         get() = data.itemStack.apply {
-            display += " &6$sumEnhance(+$enhancePlus)"
+            display += "&7| &6$sumEnhance(+$enhancePlus)"
             lore.add("")
-            statusDescription.forEach { (key, value) ->
-                lore.add("&6$key: $value")
+            statusChange.forEach { (statusType, value) ->
+                lore.add("${statusType.display}: ${value.first}")
             }
             editPersistentData(itemPlugin) {
                 set(enhancePersistentDataKey, PersistentDataType.INTEGER, enhance)
