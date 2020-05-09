@@ -7,14 +7,18 @@ import me.syari.ss.battle.status.player.PlayerStatus
 import me.syari.ss.battle.status.player.StatusChange
 import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.custom.ItemType
-import org.bukkit.Material
 
 interface WeaponItem: CustomItem {
-    val onAttackStatus: Map<StatusType, Float>
-    val damageElementType: ElementType?
+    val damageElementType: ElementType
+    val damage: Float
+    val criticalChange: Float
+    val attackSpeed: Float
 
     fun getDamage(playerStatus: PlayerStatus, victimStatus: EntityStatus): Float {
+        val onAttackStatus = mapOf(
+            StatusType.Attack(damageElementType) to damage,
+            StatusType.CriticalChance to criticalChange
+        )
         onAttackStatus.forEach { (statusType, value) ->
             playerStatus.add(
                 StatusChange.Cause.Equipment, statusType, value, StatusChange.Type.Add
