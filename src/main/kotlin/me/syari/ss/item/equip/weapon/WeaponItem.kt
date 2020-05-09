@@ -7,21 +7,16 @@ import me.syari.ss.battle.status.player.PlayerStatus
 import me.syari.ss.battle.status.player.StatusChange
 import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.equip.weapon.indirect.BowItem
 import me.syari.ss.item.equip.weapon.indirect.WandItem
 import me.syari.ss.item.equip.weapon.melee.MeleeItem
 import org.bukkit.Material
 
-open class WeaponItem(data: Data, override val itemType: ItemType): CustomItem {
-    override val id = data.id
-    override val material = data.material
-    override val display = data.display
-    override val description = data.description
-    val damageElementType = data.damageElementType
-    val damage: Float = data.damage
-    val criticalChance = data.criticalChance
-    val attackSpeed = data.attackSpeed
+interface WeaponItem: CustomItem {
+    val damageElementType: ElementType
+    val damage: Float
+    val criticalChance: Float
+    val attackSpeed: Float
 
     fun getDamage(playerStatus: PlayerStatus, victimStatus: EntityStatus): Float {
         val onAttackStatus = mapOf(
@@ -36,25 +31,34 @@ open class WeaponItem(data: Data, override val itemType: ItemType): CustomItem {
         return DamageCalculator.getDamage(playerStatus, victimStatus)
     }
 
-    data class Data(
-        val id: String,
-        val material: Material,
-        val display: String,
-        val description: String,
-        val damageElementType: ElementType,
-        val damage: Float,
-        val criticalChance: Float,
-        val attackSpeed: Float
-    )
-
     companion object {
         fun create(
-            weaponType: WeaponType, data: Data
+            weaponType: WeaponType,
+            id: String,
+            material: Material,
+            display: String,
+            description: String,
+            damageElementType: ElementType,
+            damage: Float,
+            criticalChance: Float,
+            attackSpeed: Float
         ): WeaponItem? {
             return when {
-                weaponType.isBowItem -> BowItem(data)
-                weaponType.isWandItem -> WandItem(data)
-                weaponType.isMeleeItem -> weaponType.toMeleeItemType?.let { MeleeItem(data, it) }
+                weaponType.isBowItem -> {
+                    BowItem(
+                        id, material, display, description, damageElementType, damage, criticalChance, attackSpeed
+                    )
+                }
+                weaponType.isWandItem -> {
+                    WandItem(
+                        id, material, display, description, damageElementType, damage, criticalChance, attackSpeed
+                    )
+                }
+                weaponType.isMeleeItem -> weaponType.toMeleeItemType?.let {
+                    MeleeItem(
+                        id, material, display, description, damageElementType, damage, criticalChance, attackSpeed, it
+                    )
+                }
                 else -> null
             }
         }
