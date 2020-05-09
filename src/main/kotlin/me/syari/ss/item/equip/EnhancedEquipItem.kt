@@ -7,6 +7,7 @@ import org.bukkit.persistence.PersistentDataType
 open class EnhancedEquipItem(
     open val data: EquipItem, val enhance: Int, var enhancePlus: Int
 ) {
+    open val statusDescription = listOf<Pair<String, String>>()
 
     val sumEnhance
         get(): Int {
@@ -28,6 +29,10 @@ open class EnhancedEquipItem(
     val itemStack: CustomItemStack
         get() = data.itemStack.apply {
             display += " &6$sumEnhance(+$enhancePlus)"
+            lore.add("")
+            statusDescription.forEach { (key, value) ->
+                lore.add("&6$key: $value")
+            }
             editPersistentData(itemPlugin) {
                 set(enhancePersistentDataKey, PersistentDataType.INTEGER, enhance)
                 set(enhancePlusPersistentDataKey, PersistentDataType.INTEGER, enhancePlus)
