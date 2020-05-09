@@ -4,6 +4,7 @@ import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
 import me.syari.ss.item.compass.CompassItem
 import me.syari.ss.item.compass.CompassItem.Companion.allCompass
+import me.syari.ss.item.equip.EnhancedEquipItem
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import org.bukkit.inventory.ItemStack
@@ -69,17 +70,17 @@ interface ItemChest {
         override val defaultMaxPage = 2
         private val itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
 
-        fun add(item: EquipItem.Data) {
+        fun add(item: EnhancedEquipItem) {
             itemList.add(item)
             DatabaseConnector.Chest.Equip.add(uuidPlayer, item)
         }
 
-        fun remove(item: EquipItem.Data) {
+        fun remove(item: EnhancedEquipItem) {
             itemList.remove(item)
             DatabaseConnector.Chest.Equip.remove(uuidPlayer, item)
         }
 
-        fun getList(page: Int): List<EquipItem.Data>? {
+        fun getList(page: Int): List<EnhancedEquipItem>? {
             return itemList.slice(page, maxPage)
         }
     }

@@ -5,6 +5,7 @@ import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.core.sql.MySQL
 import me.syari.ss.item.chest.ItemChest
 import me.syari.ss.item.compass.CompassItem
+import me.syari.ss.item.equip.EnhancedEquipItem
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import java.sql.Statement
@@ -167,8 +168,8 @@ object DatabaseConnector: OnEnable {
                 )
             }
 
-            fun get(uuidPlayer: UUIDPlayer): List<EquipItem.Data> {
-                val list = mutableListOf<EquipItem.Data>()
+            fun get(uuidPlayer: UUIDPlayer): List<EnhancedEquipItem> {
+                val list = mutableListOf<EnhancedEquipItem>()
                 sql?.use {
                     val result = executeQuery(
                         """
@@ -179,20 +180,20 @@ object DatabaseConnector: OnEnable {
                         EquipItem.from(result.getString(1))?.let { item ->
                             val enhance = result.getInt(2)
                             val enhancePlus = result.getInt(3)
-                            list.add(EquipItem.Data(item, enhance, enhancePlus))
+                            list.add(EnhancedEquipItem(item, enhance, enhancePlus))
                         }
                     }
                 }
                 return list
             }
 
-            fun add(uuidPlayer: UUIDPlayer, item: EquipItem.Data) {
+            fun add(uuidPlayer: UUIDPlayer, item: EnhancedEquipItem) {
                 sql?.use {
                     executeUpdate(
                         """
                             INSERT INTO CompassItemChest VALUE (
                                 '$uuidPlayer',
-                                '${item.equipItem.id}',
+                                '${item.data.id}',
                                 ${item.enhance},
                                 ${item.enhancePlus}
                             );
@@ -201,7 +202,7 @@ object DatabaseConnector: OnEnable {
                 }
             }
 
-            fun remove(uuidPlayer: UUIDPlayer, item: EquipItem.Data) {
+            fun remove(uuidPlayer: UUIDPlayer, item: EnhancedEquipItem) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -209,7 +210,7 @@ object DatabaseConnector: OnEnable {
                                 WHERE
                                     UUID = '$uuidPlayer'
                                 AND
-                                    ItemID = '${item.equipItem.id}'
+                                    ItemID = '${item.data.id}'
                                 AND
                                     Enhance = ${item.enhance}
                                 AND

@@ -35,7 +35,7 @@ object EventListener: Event {
                 Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> ClickableItem.Type.Right
                 else -> return
             }
-            customItem.onClick(player, clickType)
+            customItem.onClick(player, item, clickType)
         }
     }
 
@@ -48,13 +48,14 @@ object EventListener: Event {
     fun on(e: EntityShootBowEvent) {
         val entity = e.entity
         val entityStatus = if (entity is Player) {
+            e.consumeArrow = false
             val item = e.bow?.let {
                 CustomItemStack.create(it)
             } ?: return
-            val customItem = CustomItem.from(item) ?: return
-            if (customItem !is BowItem) return
-            e.consumeArrow = false
-            customItem.getAttackStatus(entity)
+            val bowItem = CustomItem.from(item) ?: return
+            if (bowItem !is BowItem) return
+            val enhancedBowItem = bowItem.getEnhanced(item)
+            enhancedBowItem.getAttackStatus(entity)
         } else {
             EntityStatus.from(entity)
         } ?: return
@@ -73,10 +74,11 @@ object EventListener: Event {
                 metaDataValue.value() as? EntityStatus ?: return
             }
             is Player -> {
-                val weapon = CustomItemStack.create(attacker.inventory.itemInMainHand)
-                val customItem = CustomItem.from(weapon)
+                val item = CustomItemStack.create(attacker.inventory.itemInMainHand)
+                val customItem = CustomItem.from(item)
                 if (customItem is MeleeItem) {
-                    customItem.getAttackStatus(attacker)
+                    val enhancedMeleeItem = customItem.getEnhanced(item)
+                    enhancedMeleeItem.getAttackStatus(attacker)
                 } else {
                     attacker.status
                 }
