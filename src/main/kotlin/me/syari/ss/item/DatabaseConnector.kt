@@ -1,5 +1,6 @@
 package me.syari.ss.item
 
+import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.core.sql.MySQL
 import me.syari.ss.item.chest.ItemChest
@@ -8,7 +9,11 @@ import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import java.sql.Statement
 
-object DatabaseConnector {
+object DatabaseConnector: OnEnable {
+    override fun onEnable() {
+        createTable()
+    }
+
     internal var sql: MySQL? = null
 
     fun createTable() {
