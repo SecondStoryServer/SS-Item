@@ -4,6 +4,7 @@ import me.syari.ss.battle.damage.DamageCalculator
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.battle.status.EntityStatus
 import me.syari.ss.battle.status.player.PlayerStatus
+import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.battle.status.player.StatusChange
 import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.item.custom.CustomItem
@@ -11,6 +12,7 @@ import me.syari.ss.item.equip.weapon.indirect.BowItem
 import me.syari.ss.item.equip.weapon.indirect.WandItem
 import me.syari.ss.item.equip.weapon.melee.MeleeItem
 import org.bukkit.Material
+import org.bukkit.entity.Player
 
 interface WeaponItem: CustomItem {
     val damageElementType: ElementType
@@ -18,7 +20,8 @@ interface WeaponItem: CustomItem {
     val criticalChance: Float
     val attackSpeed: Float
 
-    fun getDamage(playerStatus: PlayerStatus, victimStatus: EntityStatus): Float {
+    fun getAttackStatus(player: Player): PlayerStatus {
+        val playerStatus = player.status.clone()
         val onAttackStatus = mapOf(
             StatusType.Attack(damageElementType) to damage, StatusType.CriticalChance to criticalChance
         )
@@ -28,10 +31,12 @@ interface WeaponItem: CustomItem {
             )
         }
         playerStatus.damageElementType = damageElementType
-        return DamageCalculator.getDamage(playerStatus, victimStatus)
+        return playerStatus
     }
 
     companion object {
+        const val projectileShooterStatusMetaDataKey = "ss-item-projectile-shooter-status"
+
         fun create(
             weaponType: WeaponType,
             id: String,
