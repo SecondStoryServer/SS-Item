@@ -49,7 +49,7 @@ interface ItemChest {
             set(item, totalAmount)
         }
 
-        fun set(item: GeneralItem, amount: Int){
+        fun set(item: GeneralItem, amount: Int) {
             if (0 < amount) {
                 itemList[item] = amount
             } else {
@@ -94,14 +94,14 @@ interface ItemChest {
         }
 
         fun add(item: CompassItem): Boolean {
-            if(has(item)) return false
+            if (has(item)) return false
             itemList.add(item)
             DatabaseConnector.Chest.Compass.add(uuidPlayer, item)
             return true
         }
 
         fun remove(item: CompassItem): Boolean {
-            if(!has(item)) return false
+            if (!has(item)) return false
             itemList.remove(item)
             DatabaseConnector.Chest.Compass.remove(uuidPlayer, item)
             return true

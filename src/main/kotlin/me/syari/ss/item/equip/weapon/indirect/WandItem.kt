@@ -2,7 +2,6 @@ package me.syari.ss.item.equip.weapon.indirect
 
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.particle.CustomParticle
-import me.syari.ss.core.particle.CustomParticleList
 import me.syari.ss.core.scheduler.CustomScheduler.runTimer
 import me.syari.ss.item.EventListener.setProjectileStatus
 import me.syari.ss.item.Main.Companion.itemPlugin
@@ -27,17 +26,17 @@ class WandItem(
     override val itemType = ItemType.Weapon(WeaponType.Wand)
 
     override fun onClick(player: Player, clickType: ClickableItem.Type) {
-        if(clickType.isRight){
+        if (clickType.isRight) {
             val snowball = player.launchProjectile(Snowball::class.java)
             setProjectileStatus(snowball, getAttackStatus(player))
             applyParticle(snowball)
         }
     }
 
-    private fun applyParticle(snowball: Snowball){
+    private fun applyParticle(snowball: Snowball) {
         val particle = CustomParticle.RedStone(155, 89, 182, 10, 0.0)
-        runTimer(itemPlugin, 10){
-            if(snowball.isValid) {
+        runTimer(itemPlugin, 10) {
+            if (snowball.isValid) {
                 cancel()
             } else {
                 particle.spawn(snowball)

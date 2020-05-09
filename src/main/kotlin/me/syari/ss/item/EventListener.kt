@@ -2,7 +2,6 @@ package me.syari.ss.item
 
 import me.syari.ss.battle.damage.DamageCalculator
 import me.syari.ss.battle.status.EntityStatus
-import me.syari.ss.battle.status.player.PlayerStatus
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.item.CustomItemStack
@@ -40,20 +39,20 @@ object EventListener: Event {
         }
     }
 
-    fun setProjectileStatus(projectile: Entity, status: EntityStatus){
+    fun setProjectileStatus(projectile: Entity, status: EntityStatus) {
         val metadataValue = FixedMetadataValue(itemPlugin, status)
         projectile.setMetadata(projectileShooterStatusMetaDataKey, metadataValue)
     }
 
     @EventHandler
-    fun on(e: EntityShootBowEvent){
+    fun on(e: EntityShootBowEvent) {
         val entity = e.entity
-        val entityStatus = if(entity is Player){
+        val entityStatus = if (entity is Player) {
             val item = e.bow?.let {
                 CustomItemStack.create(it)
             } ?: return
             val customItem = CustomItem.from(item) ?: return
-            if(customItem !is BowItem) return
+            if (customItem !is BowItem) return
             e.consumeArrow = false
             customItem.getAttackStatus(entity)
         } else {
@@ -63,11 +62,11 @@ object EventListener: Event {
     }
 
     @EventHandler
-    fun on(e: EntityDamageByEntityEvent){
+    fun on(e: EntityDamageByEntityEvent) {
         val attacker = e.damager
         val victim = e.entity
         val victimStatus = EntityStatus.from(victim) ?: return
-        val attackerStatus = when(attacker){
+        val attackerStatus = when (attacker) {
             is Projectile -> {
                 val metaDataValueList = attacker.getMetadata(projectileShooterStatusMetaDataKey)
                 val metaDataValue = metaDataValueList.firstOrNull() ?: return
@@ -76,7 +75,7 @@ object EventListener: Event {
             is Player -> {
                 val weapon = CustomItemStack.create(attacker.inventory.itemInMainHand)
                 val customItem = CustomItem.from(weapon)
-                if(customItem is MeleeItem){
+                if (customItem is MeleeItem) {
                     customItem.getAttackStatus(attacker)
                 } else {
                     attacker.status

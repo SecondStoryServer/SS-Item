@@ -181,7 +181,7 @@ object DatabaseConnector {
                 return list
             }
 
-            fun add(uuidPlayer: UUIDPlayer, item: EquipItem.Data){
+            fun add(uuidPlayer: UUIDPlayer, item: EquipItem.Data) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -196,7 +196,7 @@ object DatabaseConnector {
                 }
             }
 
-            fun remove(uuidPlayer: UUIDPlayer, item: EquipItem.Data){
+            fun remove(uuidPlayer: UUIDPlayer, item: EquipItem.Data) {
                 sql?.use {
                     executeUpdate(
                         """

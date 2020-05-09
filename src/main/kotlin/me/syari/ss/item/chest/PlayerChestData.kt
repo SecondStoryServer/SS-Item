@@ -15,6 +15,6 @@ data class PlayerChestData(val uuidPlayer: UUIDPlayer) {
             get() = UUIDPlayer(this).chestData
 
         private val UUIDPlayer.chestData
-            get() = chestDataMap.getOrPut(this){ PlayerChestData(this) }
+            get() = chestDataMap.getOrPut(this) { PlayerChestData(this) }
     }
 }

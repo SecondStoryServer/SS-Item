@@ -1,8 +1,6 @@
 package me.syari.ss.item.equip.weapon
 
-import me.syari.ss.battle.damage.DamageCalculator
 import me.syari.ss.battle.equipment.ElementType
-import me.syari.ss.battle.status.EntityStatus
 import me.syari.ss.battle.status.player.PlayerStatus
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.battle.status.player.StatusChange
