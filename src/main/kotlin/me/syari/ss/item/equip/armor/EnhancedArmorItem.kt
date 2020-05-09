@@ -8,8 +8,8 @@ class EnhancedArmorItem(
 ): EnhancedEquipItem(
     data, enhance, enhancePlus
 ) {
-    private val damage = data.defense * enhanceRate
+    private val defense = data.defense * enhanceRate
     override val statusChange = mapOf<StatusType, Pair<String, Float>>(
-        StatusType.Attack(data.defenseElementType) to ("+$damage" to damage)
+        StatusType.Attack(data.defenseElementType) to ("+$defense" to defense)
     )
 }
