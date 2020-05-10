@@ -22,6 +22,7 @@ interface WeaponItem: EquipItem {
 
     companion object {
         const val projectileShooterStatusMetaDataKey = "ss-item-projectile-shooter-status"
+        const val arrowForceMetaDataKey = "ss-item-arrow-force"
 
         fun create(
             weaponType: WeaponType,

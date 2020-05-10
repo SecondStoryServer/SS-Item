@@ -8,9 +8,11 @@ import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.CustomItem
+import me.syari.ss.item.equip.weapon.WeaponItem.Companion.arrowForceMetaDataKey
 import me.syari.ss.item.equip.weapon.WeaponItem.Companion.projectileShooterStatusMetaDataKey
 import me.syari.ss.item.equip.weapon.indirect.BowItem
 import me.syari.ss.item.equip.weapon.melee.MeleeItem
+import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
@@ -59,7 +61,9 @@ object EventListener: Event {
         } else {
             EntityStatus.from(entity)
         } ?: return
-        setProjectileStatus(e.projectile, entityStatus)
+        val arrow = e.projectile
+        setProjectileStatus(arrow, entityStatus)
+        arrow.setMetadata(arrowForceMetaDataKey, FixedMetadataValue(itemPlugin, e.force))
     }
 
     @EventHandler
@@ -67,11 +71,18 @@ object EventListener: Event {
         val attacker = e.damager
         val victim = e.entity
         val victimStatus = EntityStatus.from(victim) ?: return
-        val attackerStatus = when (attacker) {
+        val (attackerStatus, damageRate) = when (attacker) {
             is Projectile -> {
-                val metaDataValueList = attacker.getMetadata(projectileShooterStatusMetaDataKey)
-                val metaDataValue = metaDataValueList.firstOrNull() ?: return
-                metaDataValue.value() as? EntityStatus ?: return
+                val statusMetaDataValueList = attacker.getMetadata(projectileShooterStatusMetaDataKey)
+                val statusMetaDataValue = statusMetaDataValueList.firstOrNull() ?: return
+                val status = statusMetaDataValue.value() as? EntityStatus ?: return
+                val force = if (attacker is Arrow) {
+                    val forceMetadataValueList = attacker.getMetadata(arrowForceMetaDataKey)
+                    forceMetadataValueList.firstOrNull()?.asFloat() ?: 1.0F
+                } else {
+                    1.0F
+                }
+                status to force
             }
             is Player -> {
                 val item = CustomItemStack.create(attacker.inventory.itemInMainHand)
@@ -81,12 +92,13 @@ object EventListener: Event {
                     enhancedMeleeItem.getAttackStatus(attacker)
                 } else {
                     attacker.status
-                }
+                } to attacker.attackCooldown
             }
             else -> {
                 return
             }
         }
-        e.damage = DamageCalculator.getDamage(attackerStatus, victimStatus).toDouble()
+        val damage = DamageCalculator.getDamage(attackerStatus, victimStatus) * damageRate
+        e.damage = damage.toDouble()
     }
 }
