@@ -161,8 +161,7 @@ object DatabaseConnector: OnEnable {
                         CREATE TABLE IF NOT EXISTS EquipItemChest(
                             UUID VARCHAR(36),
                             ItemID VARCHAR(255),
-                            Enhance INT,
-                            EnhancePlus INT
+                            Enhance INT
                         );
                     """.trimIndent()
                 )
@@ -173,14 +172,13 @@ object DatabaseConnector: OnEnable {
                 sql?.use {
                     val result = executeQuery(
                         """
-                            SELECT ItemID, Enhance, EnhancePlus FROM EquipItemChest WHERE UUID = '$uuidPlayer';
+                            SELECT ItemID, Enhance FROM EquipItemChest WHERE UUID = '$uuidPlayer';
                         """.trimIndent()
                     )
                     while (result.next()) {
                         EquipItem.from(result.getString(1))?.let { item ->
                             val enhance = result.getInt(2)
-                            val enhancePlus = result.getInt(3)
-                            list.add(EnhancedEquipItem(item, enhance, enhancePlus))
+                            list.add(EnhancedEquipItem(item, enhance))
                         }
                     }
                 }
@@ -194,8 +192,7 @@ object DatabaseConnector: OnEnable {
                             INSERT INTO CompassItemChest VALUE (
                                 '$uuidPlayer',
                                 '${item.data.id}',
-                                ${item.enhance},
-                                ${item.enhancePlus}
+                                ${item.enhance}
                             );
                         """.trimIndent()
                     )
@@ -213,8 +210,6 @@ object DatabaseConnector: OnEnable {
                                     ItemID = '${item.data.id}'
                                 AND
                                     Enhance = ${item.enhance}
-                                AND
-                                    EnhancePlus = ${item.enhancePlus}
                             LIMIT 1;
                         """.trimIndent()
                     )

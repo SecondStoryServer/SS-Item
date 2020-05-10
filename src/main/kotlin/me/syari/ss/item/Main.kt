@@ -55,7 +55,7 @@ class Main: JavaPlugin() {
                 0.5F,
                 3.0F
             ) ?: return@createCommand sendError("testSword が null でした")
-            val enhancedTestSword = EnhancedWeaponItem(testSword, 50, 10)
+            val enhancedTestSword = EnhancedWeaponItem(testSword, 50)
             sender.give(enhancedTestSword.itemStack)
             sendWithPrefix("アイテムを渡したよ")
         }

@@ -4,9 +4,9 @@ import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.item.equip.EnhancedEquipItem
 
 class EnhancedArmorItem(
-    override val data: ArmorItem, enhance: Int, enhancePlus: Int
+    override val data: ArmorItem, enhance: Int
 ): EnhancedEquipItem(
-    data, enhance, enhancePlus
+    data, enhance
 ) {
     private val defense = data.defense * enhanceRate
     override val statusChange = mapOf<StatusType, Pair<String, Float>>(

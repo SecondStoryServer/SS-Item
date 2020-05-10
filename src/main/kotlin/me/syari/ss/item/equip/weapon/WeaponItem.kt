@@ -3,7 +3,6 @@ package me.syari.ss.item.equip.weapon
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhance
-import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhancePlus
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.equip.weapon.indirect.BowItem
 import me.syari.ss.item.equip.weapon.indirect.WandItem
@@ -17,7 +16,7 @@ interface WeaponItem: EquipItem {
     val attackSpeed: Float
 
     override fun getEnhanced(item: CustomItemStack): EnhancedWeaponItem {
-        return EnhancedWeaponItem(this, getEnhance(item), getEnhancePlus(item))
+        return EnhancedWeaponItem(this, getEnhance(item))
     }
 
     companion object {
