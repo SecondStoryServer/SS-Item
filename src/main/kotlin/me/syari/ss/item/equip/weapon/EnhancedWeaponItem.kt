@@ -6,7 +6,11 @@ import me.syari.ss.battle.status.player.StatusChange
 import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.equip.EnhancedEquipItem
+import org.bukkit.attribute.Attribute
+import org.bukkit.attribute.AttributeModifier
 import org.bukkit.entity.Player
+import org.bukkit.inventory.EquipmentSlot
+import java.util.UUID
 
 class EnhancedWeaponItem(
     override val data: WeaponItem, enhance: Int, enhancePlus: Int
@@ -23,6 +27,23 @@ class EnhancedWeaponItem(
     override val itemStack: CustomItemStack
         get() = super.itemStack.apply {
             lore.add("&6攻撃速度: $attackSpeedBar")
+            editMeta {
+                val attributeModifiers = getAttributeModifiers(Attribute.GENERIC_ATTACK_SPEED)
+                var changeAttackSpeed = data.attackSpeed.toDouble()
+                attributeModifiers?.forEach {
+                    if (it.operation == AttributeModifier.Operation.ADD_NUMBER) {
+                        changeAttackSpeed -= it.amount
+                    }
+                }
+                val modifier = AttributeModifier(
+                    UUID.randomUUID(),
+                    "ss-item",
+                    changeAttackSpeed,
+                    AttributeModifier.Operation.ADD_NUMBER,
+                    EquipmentSlot.HAND
+                )
+                addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier)
+            }
         }
 
     fun getAttackStatus(player: Player): PlayerStatus {
