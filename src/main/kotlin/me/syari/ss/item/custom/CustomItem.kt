@@ -16,7 +16,11 @@ interface CustomItem {
 
     val itemStack: CustomItemStack
         get() = CustomItemStack.create(
-            material, display, "&6アイテムタイプ: $itemType", "", *description.lines().map { "&7$it" }.toTypedArray()
+            material,
+            display,
+            "&6アイテムタイプ: ${itemType.color}${itemType.display}",
+            "",
+            *description.lines().map { "&7$it" }.toTypedArray()
         )
 
     companion object {

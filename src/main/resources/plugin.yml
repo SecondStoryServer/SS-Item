@@ -5,3 +5,4 @@ main: me.syari.ss.item.Main
 author: sya_ri
 depend:
   - "SS-Core"
+  - "SS-Battle"

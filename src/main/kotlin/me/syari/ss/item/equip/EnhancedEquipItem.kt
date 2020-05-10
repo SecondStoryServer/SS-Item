@@ -29,10 +29,12 @@ open class EnhancedEquipItem(
 
     open val itemStack: CustomItemStack
         get() = data.itemStack.apply {
-            display += "&7| &6$sumEnhance(+$enhancePlus)"
-            lore.add("")
-            statusChange.forEach { (statusType, value) ->
-                lore.add("${statusType.display}: ${value.first}")
+            display += " &7&l｜ &6$sumEnhance (+$enhancePlus)"
+            editLore {
+                add("")
+                statusChange.forEach { (statusType, value) ->
+                    add("${statusType.display}: &7${value.first}")
+                }
             }
             editPersistentData(itemPlugin) {
                 set(enhancePersistentDataKey, PersistentDataType.INTEGER, enhance)
@@ -44,10 +46,13 @@ open class EnhancedEquipItem(
         const val enhancePersistentDataKey = "ss-item-equip-enhance"
         const val enhancePlusPersistentDataKey = "ss-item-equip-enhance-plus"
 
-        val CustomItemStack.enhance
-            get() = getPersistentData(itemPlugin)?.get(enhancePersistentDataKey, PersistentDataType.INTEGER) ?: 0
+        fun getEnhance(item: CustomItemStack): Int {
+            return item.getPersistentData(itemPlugin)?.get(enhancePersistentDataKey, PersistentDataType.INTEGER) ?: 0
+        }
 
-        val CustomItemStack.enhancePlus
-            get() = getPersistentData(itemPlugin)?.get(enhancePlusPersistentDataKey, PersistentDataType.INTEGER) ?: 0
+        fun getEnhancePlus(item: CustomItemStack): Int {
+            return item.getPersistentData(itemPlugin)?.get(enhancePlusPersistentDataKey, PersistentDataType.INTEGER)
+                ?: 0
+        }
     }
 }

@@ -1,13 +1,22 @@
 package me.syari.ss.item
 
+import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.auto.OnEnable
+import me.syari.ss.core.command.create.CreateCommand.createCommand
+import me.syari.ss.core.command.create.ErrorMessage
+import me.syari.ss.core.item.ItemStackPlus.give
 import me.syari.ss.item.compass.CompassItem
 import me.syari.ss.item.custom.register.ItemRegister
 import me.syari.ss.item.custom.register.RegisterFunction
 import me.syari.ss.item.equip.EquipItem
+import me.syari.ss.item.equip.weapon.EnhancedWeaponItem
+import me.syari.ss.item.equip.weapon.WeaponItem
+import me.syari.ss.item.equip.weapon.WeaponType
 import me.syari.ss.item.general.GeneralItem
 import me.syari.ss.item.general.potion.HealPotion
+import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main: JavaPlugin() {
@@ -29,5 +38,26 @@ class Main: JavaPlugin() {
         Event.register(
             this, EventListener
         )
+        testCommand()
+    }
+
+    private fun testCommand() {
+        createCommand(this, "test-command", "SS-Item-Test") { sender, _ ->
+            if (sender !is Player) return@createCommand sendError(ErrorMessage.OnlyPlayer)
+            val testSword = WeaponItem.create(
+                WeaponType.Sword,
+                "test-sword",
+                Material.DIAMOND_SWORD,
+                "&bテストソード",
+                "テスト用に作成された剣",
+                ElementType.Dark,
+                10.0F,
+                0.5F,
+                3.0F
+            ) ?: return@createCommand sendError("testSword が null でした")
+            val enhancedTestSword = EnhancedWeaponItem(testSword, 50, 10)
+            sender.give(enhancedTestSword.itemStack)
+            sendWithPrefix("アイテムを渡したよ")
+        }
     }
 }
