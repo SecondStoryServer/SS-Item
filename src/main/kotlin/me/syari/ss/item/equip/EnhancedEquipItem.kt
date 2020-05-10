@@ -27,7 +27,7 @@ open class EnhancedEquipItem(
             return ((rateEnd - rateBegin) * (sumEnhance / 100F)) + rateBegin
         }
 
-    val itemStack: CustomItemStack
+    open val itemStack: CustomItemStack
         get() = data.itemStack.apply {
             display += "&7| &6$sumEnhance(+$enhancePlus)"
             lore.add("")
