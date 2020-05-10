@@ -92,7 +92,7 @@ object EventListener: Event {
                     enhancedMeleeItem.getAttackStatus(attacker)
                 } else {
                     attacker.status
-                } to attacker.attackCooldown
+                } to getDamageRate(attacker.attackCooldown)
             }
             else -> {
                 return
@@ -100,5 +100,11 @@ object EventListener: Event {
         }
         val damage = DamageCalculator.getDamage(attackerStatus, victimStatus) * damageRate
         e.damage = damage.toDouble()
+    }
+
+    private fun getDamageRate(attackCoolDown: Float): Float {
+        val minDamageRate = 0.2F
+        val maxDamageRate = 1.0F
+        return ((maxDamageRate - minDamageRate) * attackCoolDown) + minDamageRate
     }
 }
