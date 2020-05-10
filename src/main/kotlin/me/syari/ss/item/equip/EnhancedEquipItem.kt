@@ -29,8 +29,12 @@ open class EnhancedEquipItem(
 
     open val itemStack: CustomItemStack
         get() = data.itemStack.apply {
-            display += " &7&l｜ &6$sumEnhance (+$enhancePlus)"
+            display += " &6+$sumEnhance"
             editLore {
+                if (enhancePlus != 0) {
+                    add("")
+                    add("&b強化値: &7+$enhancePlus")
+                }
                 add("")
                 statusChange.forEach { (statusType, value) ->
                     add("${statusType.display}: &7${value.first}")
