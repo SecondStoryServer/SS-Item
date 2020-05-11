@@ -13,8 +13,8 @@ class BowItem(
     override val description: String,
     override val damageElementType: ElementType,
     override val damage: Float,
-    override val criticalChance: Float,
-    override val attackSpeed: Float
+    override val criticalChance: Float
 ): WeaponItem {
     override val itemType = ItemType.Weapon(WeaponType.Bow)
+    override val attackSpeed = 1.0F
 }

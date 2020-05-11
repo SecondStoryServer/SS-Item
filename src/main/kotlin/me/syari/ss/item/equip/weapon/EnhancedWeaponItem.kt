@@ -80,6 +80,7 @@ class EnhancedWeaponItem(
     }
 
     companion object {
+        // https://minecraft.gamepedia.com/Damage
         private val materialToAttackSpeed = mapOf(
             Material.WOODEN_SWORD to 1.6,
             Material.GOLDEN_SWORD to 1.6,

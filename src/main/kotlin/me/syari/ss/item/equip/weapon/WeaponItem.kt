@@ -37,7 +37,7 @@ interface WeaponItem: EquipItem {
             return when {
                 weaponType.isBowItem -> {
                     BowItem(
-                        id, material, display, description, damageElementType, damage, criticalChance, attackSpeed
+                        id, material, display, description, damageElementType, damage, criticalChance
                     )
                 }
                 weaponType.isWandItem -> {
