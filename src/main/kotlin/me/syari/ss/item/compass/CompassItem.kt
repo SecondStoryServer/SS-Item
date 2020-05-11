@@ -14,6 +14,10 @@ data class CompassItem(
     override val display = "&6コンパス &a$teleportTo"
     override val description = "船を借りることで出来れば、$teleportTo へ行くことが出来る"
 
+    override fun register() {
+        register(id, this)
+    }
+
     companion object: ItemRegister<CompassItem>() {
         val allCompass get() = idToList.values.toList()
     }

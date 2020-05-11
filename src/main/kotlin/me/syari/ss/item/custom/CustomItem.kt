@@ -21,7 +21,13 @@ interface CustomItem {
             "&6アイテムタイプ: ${itemType.color}${itemType.display}",
             "",
             *description.lines().map { "&7$it" }.toTypedArray()
-        )
+        ).apply {
+            editPersistentData(itemPlugin) {
+                set(itemIdPersistentKey, PersistentDataType.STRING, id)
+            }
+        }
+
+    fun register()
 
     companion object {
         private const val itemIdPersistentKey = "ss-item-id"

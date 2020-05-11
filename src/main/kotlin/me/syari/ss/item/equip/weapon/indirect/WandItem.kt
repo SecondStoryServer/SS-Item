@@ -4,7 +4,6 @@ import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.core.particle.CustomParticle
 import me.syari.ss.core.scheduler.CustomScheduler.runTimer
-import me.syari.ss.item.EventListener.setProjectileStatus
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.ItemType
@@ -31,9 +30,7 @@ class WandItem(
 
     override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.ClickType): Boolean {
         if (clickType.isRight) {
-            val snowball = player.launchProjectile(Snowball::class.java)
-            setProjectileStatus(snowball, getEnhanced(item).getAttackStatus(player))
-            applyParticle(snowball)
+            // TODO 雪玉ではなくレーザーに変更
             return true
         }
         return false

@@ -10,5 +10,9 @@ interface EquipItem: CustomItem {
         return EnhancedEquipItem(this, getEnhance(item))
     }
 
+    override fun register() {
+        register(id, this)
+    }
+
     companion object: ItemRegister<EquipItem>()
 }

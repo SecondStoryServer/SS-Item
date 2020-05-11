@@ -17,7 +17,6 @@ import me.syari.ss.item.equip.weapon.melee.MeleeItem
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
-import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -55,7 +54,7 @@ object EventListener: Event {
         }
     }
 
-    fun setProjectileStatus(projectile: Entity, status: EntityStatus) {
+    private fun setProjectileStatus(projectile: Entity, status: EntityStatus) {
         val metadataValue = FixedMetadataValue(itemPlugin, status)
         projectile.setMetadata(projectileShooterStatusMetaDataKey, metadataValue)
     }
@@ -86,16 +85,12 @@ object EventListener: Event {
         val victim = e.entity
         val victimStatus = EntityStatus.from(victim) ?: return
         val (attackerStatus, damageRate) = when (attacker) {
-            is Projectile -> {
+            is Arrow -> {
                 val statusMetaDataValueList = attacker.getMetadata(projectileShooterStatusMetaDataKey)
                 val statusMetaDataValue = statusMetaDataValueList.firstOrNull() ?: return
                 val status = statusMetaDataValue.value() as? EntityStatus ?: return
-                val force = if (attacker is Arrow) {
-                    val forceMetadataValueList = attacker.getMetadata(arrowForceMetaDataKey)
-                    forceMetadataValueList.firstOrNull()?.asFloat() ?: 1.0F
-                } else {
-                    1.0F
-                }
+                val forceMetadataValueList = attacker.getMetadata(arrowForceMetaDataKey)
+                val force = forceMetadataValueList.firstOrNull()?.asFloat() ?: 1.0F
                 status to force
             }
             is Player -> {
