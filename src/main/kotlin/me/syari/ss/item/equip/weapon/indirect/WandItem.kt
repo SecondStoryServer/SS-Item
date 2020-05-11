@@ -8,6 +8,7 @@ import me.syari.ss.item.EventListener.setProjectileStatus
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.ItemType
+import me.syari.ss.item.equip.weapon.EnhancedWeaponItem.Companion.getAttackSpeedCoolDownTick
 import me.syari.ss.item.equip.weapon.WeaponItem
 import me.syari.ss.item.equip.weapon.WeaponType
 import org.bukkit.Material
@@ -25,6 +26,7 @@ class WandItem(
     override val attackSpeed: Float
 ): WeaponItem, ClickableItem {
     override val itemType = ItemType.Weapon(WeaponType.Wand)
+    override val coolDownTime = getAttackSpeedCoolDownTick(attackSpeed)
 
     override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.Type) {
         if (clickType.isRight) {

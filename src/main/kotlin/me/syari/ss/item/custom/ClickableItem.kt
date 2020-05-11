@@ -4,6 +4,8 @@ import me.syari.ss.core.item.CustomItemStack
 import org.bukkit.entity.Player
 
 interface ClickableItem {
+    val coolDownTime: Long
+
     fun onClick(player: Player, item: CustomItemStack, clickType: Type)
 
     enum class Type {

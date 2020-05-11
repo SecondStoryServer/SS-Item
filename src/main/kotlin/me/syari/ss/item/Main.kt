@@ -44,18 +44,18 @@ class Main: JavaPlugin() {
     private fun testCommand() {
         createCommand(this, "test-command", "SS-Item-Test") { sender, _ ->
             if (sender !is Player) return@createCommand sendError(ErrorMessage.OnlyPlayer)
-            val testSword = WeaponItem.create(
-                WeaponType.Sword,
-                "test-sword",
-                Material.DIAMOND_SWORD,
-                "&bテストソード",
-                "テスト用に作成された剣",
+            val testWand = WeaponItem.create(
+                WeaponType.Wand,
+                "test-wand",
+                Material.DIAMOND_HOE,
+                "&bテストワンド",
+                "テスト用に作成された杖",
                 ElementType.Dark,
                 10.0F,
                 0.5F,
                 3.0F
-            ) ?: return@createCommand sendError("testSword が null でした")
-            val enhancedTestSword = EnhancedWeaponItem(testSword, 50)
+            ) ?: return@createCommand sendError("testWand が null でした")
+            val enhancedTestSword = EnhancedWeaponItem(testWand, 50)
             sender.give(enhancedTestSword.itemStack)
             sendWithPrefix("アイテムを渡したよ")
         }

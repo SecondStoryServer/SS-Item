@@ -26,6 +26,8 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
             }
         }
 
+    override val coolDownTime = 5 * 20L
+
     override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.Type) {
         if (clickType.isRight) {
             val playerStatus = player.status

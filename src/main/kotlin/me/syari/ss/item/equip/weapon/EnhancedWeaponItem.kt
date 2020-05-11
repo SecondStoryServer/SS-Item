@@ -80,7 +80,7 @@ class EnhancedWeaponItem(
     }
 
     companion object {
-        // https://minecraft.gamepedia.com/Damage
+        // https://minecraft.gamepedia.com/Damage#Dealing_damage
         private val materialToAttackSpeed = mapOf(
             Material.WOODEN_SWORD to 1.6,
             Material.GOLDEN_SWORD to 1.6,
@@ -110,8 +110,13 @@ class EnhancedWeaponItem(
             Material.DIAMOND_HOE to 4.0
         )
 
-        private fun getDefaultAttackSpeed(material: Material): Double {
+        fun getDefaultAttackSpeed(material: Material): Double {
             return materialToAttackSpeed.getOrDefault(material, 4.0)
+        }
+
+        fun getAttackSpeedCoolDownTick(attackSpeed: Float): Long {
+            val seconds = 1.0F / attackSpeed
+            return (20 * seconds).toLong()
         }
     }
 }
