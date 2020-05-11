@@ -5,6 +5,8 @@ import me.syari.ss.battle.status.EntityStatus
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.item.CustomItemStack
+import me.syari.ss.core.player.UUIDPlayer
+import me.syari.ss.core.scheduler.CustomScheduler.runLater
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.CustomItem
@@ -24,6 +26,8 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.metadata.FixedMetadataValue
 
 object EventListener: Event {
+    private val cancelClickEvent = mutableSetOf<Pair<UUIDPlayer, ClickableItem.CoolDownType>>()
+
     @EventHandler
     fun on(e: PlayerInteractEvent) {
         val item = e.item?.let {
@@ -33,11 +37,21 @@ object EventListener: Event {
         if (customItem is ClickableItem) {
             val player = e.player
             val clickType = when (e.action) {
-                Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK -> ClickableItem.Type.Left
-                Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> ClickableItem.Type.Right
+                Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK -> ClickableItem.ClickType.Left
+                Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK -> ClickableItem.ClickType.Right
                 else -> return
             }
-            customItem.onClick(player, item, clickType)
+            val uuidPlayer = UUIDPlayer(player)
+            val coolDownType = customItem.coolDownType
+            val cancelClickEventKey = uuidPlayer to coolDownType
+            if (cancelClickEvent.contains(cancelClickEventKey)) return
+            val success = customItem.onClick(player, item, clickType)
+            if (success) {
+                cancelClickEvent.add(cancelClickEventKey)
+                runLater(itemPlugin, customItem.coolDownTime) {
+                    cancelClickEvent.remove(cancelClickEventKey)
+                }
+            }
         }
     }
 

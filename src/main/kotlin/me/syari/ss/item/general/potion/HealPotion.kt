@@ -27,13 +27,16 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
         }
 
     override val coolDownTime = 5 * 20L
+    override val coolDownType = ClickableItem.CoolDownType.Potion
 
-    override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.Type) {
+    override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.ClickType): Boolean {
         if (clickType.isRight) {
             val playerStatus = player.status
             val maxHealth = playerStatus.maxHealth
             playerStatus.health += maxHealth * size.healPercent
+            return true
         }
+        return false
     }
 
     enum class Size(val id: String, val display: String, val healPercent: Double, val maxAmount: Int) {

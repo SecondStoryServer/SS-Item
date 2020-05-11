@@ -27,13 +27,16 @@ class WandItem(
 ): WeaponItem, ClickableItem {
     override val itemType = ItemType.Weapon(WeaponType.Wand)
     override val coolDownTime = getAttackSpeedCoolDownTick(attackSpeed)
+    override val coolDownType = ClickableItem.CoolDownType.Weapon
 
-    override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.Type) {
+    override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.ClickType): Boolean {
         if (clickType.isRight) {
             val snowball = player.launchProjectile(Snowball::class.java)
             setProjectileStatus(snowball, getEnhanced(item).getAttackStatus(player))
             applyParticle(snowball)
+            return true
         }
+        return false
     }
 
     private fun applyParticle(snowball: Snowball) {
