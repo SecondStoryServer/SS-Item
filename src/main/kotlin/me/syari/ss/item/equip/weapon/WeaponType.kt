@@ -1,7 +1,5 @@
 package me.syari.ss.item.equip.weapon
 
-import me.syari.ss.item.equip.weapon.melee.MeleeItem
-
 enum class WeaponType(
     val id: String, val display: String
 ) {
@@ -25,19 +23,10 @@ enum class WeaponType(
     ),
     Knuckle(
         "knuckle", "拳"
+    ),
+    Harp(
+        "harp", "琴"
     );
-
-    inline val isBowItem
-        get() = this == Bow
-
-    inline val isWandItem
-        get() = this == Wand
-
-    inline val isMeleeItem
-        get() = MeleeItem.Type.isMeleeItem(this)
-
-    inline val toMeleeItemType
-        get() = MeleeItem.Type.fromWeaponType(this)
 
     companion object {
         fun getById(id: String): WeaponType? {

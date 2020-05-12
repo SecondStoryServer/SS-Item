@@ -10,8 +10,6 @@ import me.syari.ss.core.scheduler.CustomScheduler.runLater
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.equip.weapon.WeaponItem.Companion.arrowForceMetaDataKey
-import me.syari.ss.item.equip.weapon.WeaponItem.Companion.projectileShooterStatusMetaDataKey
 import me.syari.ss.item.equip.weapon.indirect.BowItem
 import me.syari.ss.item.equip.weapon.melee.MeleeItem
 import org.bukkit.entity.Arrow
@@ -54,9 +52,12 @@ object EventListener: Event {
         }
     }
 
+    private const val arrowShooterStatusMetaDataKey = "ss-item-arrow-shooter-status"
+    private const val arrowForceMetaDataKey = "ss-item-arrow-force"
+
     private fun setProjectileStatus(projectile: Entity, status: EntityStatus) {
         val metadataValue = FixedMetadataValue(itemPlugin, status)
-        projectile.setMetadata(projectileShooterStatusMetaDataKey, metadataValue)
+        projectile.setMetadata(arrowShooterStatusMetaDataKey, metadataValue)
     }
 
     @EventHandler
@@ -86,7 +87,7 @@ object EventListener: Event {
         val victimStatus = EntityStatus.from(victim) ?: return
         val (attackerStatus, damageRate) = when (attacker) {
             is Arrow -> {
-                val statusMetaDataValueList = attacker.getMetadata(projectileShooterStatusMetaDataKey)
+                val statusMetaDataValueList = attacker.getMetadata(arrowShooterStatusMetaDataKey)
                 val statusMetaDataValue = statusMetaDataValueList.firstOrNull() ?: return
                 val status = statusMetaDataValue.value() as? EntityStatus ?: return
                 val forceMetadataValueList = attacker.getMetadata(arrowForceMetaDataKey)

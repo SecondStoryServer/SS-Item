@@ -5,6 +5,7 @@ import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhance
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.equip.weapon.indirect.BowItem
+import me.syari.ss.item.equip.weapon.indirect.HarpItem
 import me.syari.ss.item.equip.weapon.indirect.WandItem
 import me.syari.ss.item.equip.weapon.melee.MeleeItem
 import org.bukkit.Material
@@ -20,37 +21,38 @@ interface WeaponItem: EquipItem {
     }
 
     companion object {
-        const val projectileShooterStatusMetaDataKey = "ss-item-projectile-shooter-status"
-        const val arrowForceMetaDataKey = "ss-item-arrow-force"
-
         fun create(
             weaponType: WeaponType,
             id: String,
             material: Material,
             display: String,
             description: String,
-            damageElementType: ElementType,
+            elementType: ElementType,
             damage: Float,
             criticalChance: Float,
             attackSpeed: Float
         ): WeaponItem? {
-            return when {
-                weaponType.isBowItem -> {
+            return when (weaponType) {
+                WeaponType.Bow -> {
                     BowItem(
-                        id, material, display, description, damageElementType, damage, criticalChance
+                        id, material, display, description, elementType, damage, criticalChance
                     )
                 }
-                weaponType.isWandItem -> {
+                WeaponType.Wand -> {
                     WandItem(
-                        id, material, display, description, damageElementType, damage, criticalChance, attackSpeed
+                        id, material, display, description, elementType, damage, criticalChance, attackSpeed
                     )
                 }
-                weaponType.isMeleeItem -> weaponType.toMeleeItemType?.let {
+                WeaponType.Harp -> {
+                    HarpItem(
+                        id, material, display, description, elementType, damage, criticalChance, attackSpeed
+                    )
+                }
+                WeaponType.Sword, WeaponType.Axe, WeaponType.Knife, WeaponType.Mace, WeaponType.Knuckle -> {
                     MeleeItem(
-                        id, material, display, description, damageElementType, damage, criticalChance, attackSpeed, it
+                        id, material, display, description, elementType, damage, criticalChance, attackSpeed, weaponType
                     )
                 }
-                else -> null
             }
         }
     }
