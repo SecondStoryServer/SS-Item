@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     implementation("com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT")
-    implementation("me.syari.ss.core:SS-Core:2.6")
+    implementation("me.syari.ss.core:SS-Core:2.7")
     implementation("me.syari.ss.battle:SS-Battle:1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
@@ -49,6 +49,7 @@ val jar by tasks.getting(Jar::class) {
 }
 
 val sourceJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("sources")
     from(sourceSets.main.get().allJava.srcDirs)
 }
 
@@ -65,9 +66,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             from(components["java"])
-            artifact(sourceJar.get()) {
-                classifier = "sources"
-            }
+            artifact(sourceJar.get())
         }
     }
 }
