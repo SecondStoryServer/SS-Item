@@ -31,9 +31,7 @@ bukkit {
     version = project.version.toString()
     main = "$group.Main"
     author = "sya_ri"
-    softDepend = listOf(
-        "SS-Core", "SS-Battle"
-    )
+    depend = listOf("SS-Core", "SS-Battle")
     apiVersion = "1.15"
     load = POSTWORLD
 }
