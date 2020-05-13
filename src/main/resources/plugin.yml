@@ -1,8 +1,0 @@
-name: SS-Item
-version: @version@
-api-version: "1.15"
-main: me.syari.ss.item.Main
-author: sya_ri
-depend:
-  - "SS-Core"
-  - "SS-Battle"
