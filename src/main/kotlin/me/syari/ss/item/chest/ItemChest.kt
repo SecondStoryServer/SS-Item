@@ -11,9 +11,9 @@ import org.bukkit.inventory.ItemStack
 interface ItemChest {
     val uuidPlayer: UUIDPlayer
     val sizeColumnName: String?
-    val defaultMaxPage: Int?
+    val defaultMaxPage: Int
 
-    var maxPage: Int?
+    var maxPage: Int
         get() = DatabaseConnector.Chest.MaxPage.get(uuidPlayer, this) ?: defaultMaxPage
         set(value) {
             DatabaseConnector.Chest.MaxPage.set(uuidPlayer, this, value)
@@ -86,7 +86,7 @@ interface ItemChest {
 
     data class Compass(override val uuidPlayer: UUIDPlayer): ItemChest {
         override val sizeColumnName: String? = null
-        override val defaultMaxPage: Int? = null
+        override val defaultMaxPage = 1
         private val itemList = DatabaseConnector.Chest.Compass.get(uuidPlayer).toMutableSet()
 
         fun has(item: CompassItem): Boolean {
