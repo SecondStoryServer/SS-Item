@@ -44,25 +44,15 @@ class Main: JavaPlugin() {
     private fun testCommand() {
         val testWand = WeaponItem.create(
             WeaponType.Wand,
-            "test-wand",
-            Material.DIAMOND_HOE,
-            "&bテストワンド",
-            "テスト用に作成された杖",
-            ElementType.Dark,
-            10.0F,
-            0.5F,
-            3.0F
+            "test-wand", Material.DIAMOND_HOE, "&bテストワンド", "テスト用に作成された杖", ElementType.Dark, 10.0F, 0.5F, 3.0F
         )
-        testWand?.let {
-            it.register()
+        testWand.register()
 
-            createCommand(this, "test-command", "SS-Item-Test") { sender, _ ->
-                if (sender !is Player) return@createCommand sendError(ErrorMessage.OnlyPlayer)
-
-                val enhancedTestSword = EnhancedWeaponItem(testWand, 50)
-                sender.give(enhancedTestSword.itemStack)
-                sendWithPrefix("アイテムを渡したよ")
-            }
+        createCommand(this, "test-command", "SS-Item-Test") { sender, _ ->
+            if (sender !is Player) return@createCommand sendError(ErrorMessage.OnlyPlayer)
+            val enhancedTestSword = EnhancedWeaponItem(testWand, 50)
+            sender.give(enhancedTestSword.itemStack)
+            sendWithPrefix("アイテムを渡したよ")
         }
     }
 }

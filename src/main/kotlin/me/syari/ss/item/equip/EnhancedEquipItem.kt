@@ -1,6 +1,6 @@
 package me.syari.ss.item.equip
 
-import me.syari.ss.battle.status.player.StatusType
+import me.syari.ss.battle.status.StatusType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
 import org.bukkit.persistence.PersistentDataType

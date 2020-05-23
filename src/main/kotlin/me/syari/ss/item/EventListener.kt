@@ -1,7 +1,10 @@
 package me.syari.ss.item
 
 import me.syari.ss.battle.damage.DamageCalculator
+import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.battle.status.EntityStatus
+import me.syari.ss.battle.status.OnDamageStatus
+import me.syari.ss.battle.status.mob.MobStatus
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.item.CustomItemStack
@@ -55,7 +58,7 @@ object EventListener: Event {
     private const val arrowShooterStatusMetaDataKey = "ss-item-arrow-shooter-status"
     private const val arrowForceMetaDataKey = "ss-item-arrow-force"
 
-    private fun setProjectileStatus(projectile: Entity, status: EntityStatus) {
+    private fun setProjectileStatus(projectile: Entity, status: OnDamageStatus) {
         val metadataValue = FixedMetadataValue(itemPlugin, status)
         projectile.setMetadata(arrowShooterStatusMetaDataKey, metadataValue)
     }
@@ -73,7 +76,7 @@ object EventListener: Event {
             val enhancedBowItem = bowItem.getEnhanced(item)
             enhancedBowItem.getAttackStatus(entity)
         } else {
-            EntityStatus.from(entity)
+            MobStatus.from(entity)
         } ?: return
         val arrow = e.projectile
         setProjectileStatus(arrow, entityStatus)
@@ -87,9 +90,10 @@ object EventListener: Event {
         val victimStatus = EntityStatus.from(victim) ?: return
         val (attackerStatus, damageRate) = when (attacker) {
             is Arrow -> {
+                if (attacker.shooter !is Player) return
                 val statusMetaDataValueList = attacker.getMetadata(arrowShooterStatusMetaDataKey)
                 val statusMetaDataValue = statusMetaDataValueList.firstOrNull() ?: return
-                val status = statusMetaDataValue.value() as? EntityStatus ?: return
+                val status = statusMetaDataValue.value() as? OnDamageStatus ?: return
                 val forceMetadataValueList = attacker.getMetadata(arrowForceMetaDataKey)
                 val force = forceMetadataValueList.firstOrNull()?.asFloat() ?: 1.0F
                 status to force
@@ -101,7 +105,7 @@ object EventListener: Event {
                     val enhancedMeleeItem = customItem.getEnhanced(item)
                     enhancedMeleeItem.getAttackStatus(attacker)
                 } else {
-                    attacker.status
+                    attacker.status.onDamage(ElementType.None) {}
                 } to getDamageRate(attacker.attackCooldown)
             }
             else -> {

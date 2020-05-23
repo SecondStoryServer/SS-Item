@@ -1,9 +1,9 @@
 package me.syari.ss.item.equip.weapon
 
-import me.syari.ss.battle.status.player.PlayerStatus
+import me.syari.ss.battle.status.OnDamageStatus
+import me.syari.ss.battle.status.StatusType
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.battle.status.player.StatusChange
-import me.syari.ss.battle.status.player.StatusType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.equip.EnhancedEquipItem
 import org.bukkit.Material
@@ -36,10 +36,7 @@ class EnhancedWeaponItem(
                 editMeta {
                     val modifier = AttributeModifier(
                         UUID.randomUUID(),
-                        "ss-item",
-                        changeAttackSpeed,
-                        AttributeModifier.Operation.ADD_NUMBER,
-                        EquipmentSlot.HAND
+                        "ss-item", changeAttackSpeed, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND
                     )
                     addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier)
                     addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
@@ -47,15 +44,12 @@ class EnhancedWeaponItem(
             }
         }
 
-    fun getAttackStatus(player: Player): PlayerStatus {
-        val playerStatus = player.status.clone()
-        statusChange.forEach { (statusType, value) ->
-            playerStatus.add(
-                StatusChange.Cause.Equipment, statusType, value.second, StatusChange.Type.Add
-            )
+    fun getAttackStatus(player: Player): OnDamageStatus {
+        return player.status.onDamage(data.damageElementType) {
+            statusChange.forEach { (statusType, value) ->
+                add(statusType, value.second, StatusChange.Type.Add)
+            }
         }
-        playerStatus.damageElementType = data.damageElementType
-        return playerStatus
     }
 
     private val attackSpeedBar: String

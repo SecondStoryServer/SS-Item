@@ -31,7 +31,7 @@ interface WeaponItem: EquipItem {
             damage: Float,
             criticalChance: Float,
             attackSpeed: Float
-        ): WeaponItem? {
+        ): WeaponItem {
             return when (weaponType) {
                 WeaponType.Bow -> {
                     BowItem(

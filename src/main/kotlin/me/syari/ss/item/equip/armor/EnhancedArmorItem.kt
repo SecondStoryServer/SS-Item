@@ -1,6 +1,6 @@
 package me.syari.ss.item.equip.armor
 
-import me.syari.ss.battle.status.player.StatusType
+import me.syari.ss.battle.status.StatusType
 import me.syari.ss.item.equip.EnhancedEquipItem
 
 class EnhancedArmorItem(
