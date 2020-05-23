@@ -44,7 +44,15 @@ class Main: JavaPlugin() {
     private fun testCommand() {
         val testWand = WeaponItem.create(
             WeaponType.Wand,
-            "test-wand", Material.DIAMOND_HOE, "&bテストワンド", "テスト用に作成された杖", ElementType.Dark, 10.0F, 0.5F, 3.0F
+            "test-wand",
+            Material.DIAMOND_HOE,
+            "&bテストワンド",
+            "テスト用に作成された杖",
+            ItemRarity.SuperRare,
+            ElementType.Dark,
+            10F,
+            0.5F,
+            3.0F
         )
         testWand.register()
 

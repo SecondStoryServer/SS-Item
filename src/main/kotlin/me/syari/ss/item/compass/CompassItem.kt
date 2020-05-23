@@ -1,5 +1,6 @@
 package me.syari.ss.item.compass
 
+import me.syari.ss.item.ItemRarity
 import me.syari.ss.item.custom.CustomItem
 import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.custom.register.ItemRegister
@@ -13,6 +14,7 @@ data class CompassItem(
     override val material = Material.COMPASS
     override val display = "&6コンパス &a$teleportTo"
     override val description = "船を借りることで出来れば、$teleportTo へ行くことが出来る"
+    override val rarity: ItemRarity? = null
 
     override fun register() {
         register(id, this)
