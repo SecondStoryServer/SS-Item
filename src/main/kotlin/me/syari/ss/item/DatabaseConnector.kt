@@ -8,6 +8,7 @@ import me.syari.ss.item.compass.CompassItem
 import me.syari.ss.item.equip.EnhancedEquipItem
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
+import me.syari.ss.item.general.GeneralItemWithAmount
 import java.sql.Statement
 
 object DatabaseConnector: OnEnable {
@@ -109,7 +110,7 @@ object DatabaseConnector: OnEnable {
                 )
             }
 
-            fun get(uuidPlayer: UUIDPlayer): Map<GeneralItem, Int> {
+            fun get(uuidPlayer: UUIDPlayer): List<GeneralItemWithAmount> {
                 val map = mutableMapOf<GeneralItem, Int>()
                 sql?.use {
                     val result = executeQuery(
@@ -123,7 +124,7 @@ object DatabaseConnector: OnEnable {
                         }
                     }
                 }
-                return map
+                return GeneralItemWithAmount.from(map)
             }
 
             fun set(uuidPlayer: UUIDPlayer, item: GeneralItem, amount: Int) {

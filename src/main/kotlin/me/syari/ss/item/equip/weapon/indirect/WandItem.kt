@@ -5,8 +5,8 @@ import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.battle.status.EntityStatus
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.core.particle.CustomParticle
+import me.syari.ss.item.ItemRarity
 import me.syari.ss.item.custom.ClickableItem
-import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.equip.weapon.EnhancedWeaponItem.Companion.getAttackSpeedCoolDownTick
 import me.syari.ss.item.equip.weapon.WeaponItem
 import me.syari.ss.item.equip.weapon.WeaponType
@@ -18,12 +18,13 @@ class WandItem(
     override val material: Material,
     override val display: String,
     override val description: String,
+    override val rarity: ItemRarity,
     override val damageElementType: ElementType,
     override val damage: Float,
     override val criticalChance: Float,
     override val attackSpeed: Float
 ): WeaponItem, ClickableItem {
-    override val itemType = ItemType.Weapon(WeaponType.Wand)
+    override val weaponType = WeaponType.Wand
     override val coolDownTime = getAttackSpeedCoolDownTick(attackSpeed)
     override val coolDownType = ClickableItem.CoolDownType.Weapon
 

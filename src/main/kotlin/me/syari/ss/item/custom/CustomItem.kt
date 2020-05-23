@@ -1,6 +1,7 @@
 package me.syari.ss.item.custom
 
 import me.syari.ss.core.item.CustomItemStack
+import me.syari.ss.item.ItemRarity
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.custom.register.ItemRegister
 import me.syari.ss.item.custom.register.RegisterFunction
@@ -13,6 +14,7 @@ interface CustomItem {
     val display: String
     val itemType: ItemType
     val description: String
+    val rarity: ItemRarity?
 
     val itemStack: CustomItemStack
         get() = CustomItemStack.create(

@@ -2,6 +2,7 @@ package me.syari.ss.item.general.potion
 
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.item.CustomItemStack
+import me.syari.ss.item.ItemRarity
 import me.syari.ss.item.custom.ClickableItem
 import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.custom.register.RegisterFunction
@@ -16,6 +17,8 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
     override val material = Material.POTION
     override val display = "&6回復ポーション &b〈${size.display}〉"
     override val description = "体力を ${size.healPercent * 100}% 回復する"
+    override val sortNumber = 0
+    override val rarity: ItemRarity? = null
     override val itemType = ItemType.Potion
     override val itemStack: CustomItemStack
         get() = super.itemStack.apply {

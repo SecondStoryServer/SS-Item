@@ -2,6 +2,8 @@ package me.syari.ss.item.equip.weapon
 
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.item.CustomItemStack
+import me.syari.ss.item.ItemRarity
+import me.syari.ss.item.custom.ItemType
 import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhance
 import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.equip.weapon.indirect.BowItem
@@ -15,9 +17,22 @@ interface WeaponItem: EquipItem {
     val damage: Float
     val criticalChance: Float
     val attackSpeed: Float
+    val weaponType: WeaponType
+    override val itemType
+        get() = ItemType.Weapon(weaponType)
+    override val sortNumber
+        get() = 1
 
     override fun getEnhanced(item: CustomItemStack): EnhancedWeaponItem {
         return EnhancedWeaponItem(this, getEnhance(item))
+    }
+
+    override fun compareTo(other: EquipItem): Int {
+        return if (other is WeaponItem) {
+            weaponType.compareTo(other.weaponType)
+        } else {
+            super.compareTo(other)
+        }
     }
 
     companion object {
@@ -27,6 +42,7 @@ interface WeaponItem: EquipItem {
             material: Material,
             display: String,
             description: String,
+            rarity: ItemRarity,
             elementType: ElementType,
             damage: Float,
             criticalChance: Float,
@@ -35,22 +51,31 @@ interface WeaponItem: EquipItem {
             return when (weaponType) {
                 WeaponType.Bow -> {
                     BowItem(
-                        id, material, display, description, elementType, damage, criticalChance
+                        id, material, display, description, rarity, elementType, damage, criticalChance
                     )
                 }
                 WeaponType.Wand -> {
                     WandItem(
-                        id, material, display, description, elementType, damage, criticalChance, attackSpeed
+                        id, material, display, description, rarity, elementType, damage, criticalChance, attackSpeed
                     )
                 }
                 WeaponType.Harp -> {
                     HarpItem(
-                        id, material, display, description, elementType, damage, criticalChance, attackSpeed
+                        id, material, display, description, rarity, elementType, damage, criticalChance, attackSpeed
                     )
                 }
                 WeaponType.Sword, WeaponType.Axe, WeaponType.Knife, WeaponType.Mace, WeaponType.Knuckle -> {
                     MeleeItem(
-                        id, material, display, description, elementType, damage, criticalChance, attackSpeed, weaponType
+                        id,
+                        material,
+                        display,
+                        description,
+                        rarity,
+                        elementType,
+                        damage,
+                        criticalChance,
+                        attackSpeed,
+                        weaponType
                     )
                 }
             }

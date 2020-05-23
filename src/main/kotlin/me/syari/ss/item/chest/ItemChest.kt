@@ -5,8 +5,10 @@ import me.syari.ss.item.DatabaseConnector
 import me.syari.ss.item.compass.CompassItem
 import me.syari.ss.item.compass.CompassItem.Companion.allCompass
 import me.syari.ss.item.equip.EnhancedEquipItem
+import me.syari.ss.item.equip.armor.EnhancedArmorItem
+import me.syari.ss.item.equip.weapon.EnhancedWeaponItem
 import me.syari.ss.item.general.GeneralItem
-import org.bukkit.inventory.ItemStack
+import me.syari.ss.item.general.GeneralItemWithAmount
 
 interface ItemChest {
     val uuidPlayer: UUIDPlayer
@@ -22,52 +24,87 @@ interface ItemChest {
     data class General(override val uuidPlayer: UUIDPlayer): ItemChest {
         override val sizeColumnName = "General"
         override val defaultMaxPage = 2
-        private val itemList = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableMap()
+        private var itemList = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableList()
+        var sortType = SortType.Type
 
-        private var itemStackListCache: List<ItemStack>? = null
-        private val itemStackList: List<ItemStack>
-            get() {
-                val lastItemStackList = itemStackListCache
-                return if (lastItemStackList == null) {
-                    val itemStackList = itemList.flatMap {
-                        it.key.itemStack.clone { amount = it.value }.toItemStack
-                    }
-                    itemStackListCache = itemStackList
-                    itemStackList
-                } else {
-                    lastItemStackList
-                }
+        fun sort() {
+            itemList = sortType.sort(itemList).toMutableList()
+        }
+
+        fun get(item: GeneralItem): GeneralItemWithAmount? {
+            return itemList.firstOrNull { it.data == item }
+        }
+
+        private fun put(item: GeneralItem): GeneralItemWithAmount {
+            return GeneralItemWithAmount(item, 0).apply {
+                itemList.add(this)
             }
+        }
+
+        fun getAmount(item: GeneralItem): Int? {
+            return get(item)?.amount
+        }
+
+        fun getAmount(item: GeneralItem, default: Int): Int {
+            return getAmount(item) ?: default
+        }
 
         fun add(item: GeneralItem, amount: Int) {
-            val totalAmount = itemList.getOrDefault(item, 0) + amount
+            val totalAmount = getAmount(item, 0) + amount
             set(item, totalAmount)
         }
 
         fun remove(item: GeneralItem, amount: Int) {
-            val totalAmount = itemList.getOrDefault(item, 0) - amount
+            val totalAmount = getAmount(item, 0) - amount
             set(item, totalAmount)
         }
 
         fun set(item: GeneralItem, amount: Int) {
+            val itemWithAmount = get(item)
             if (0 < amount) {
-                itemList[item] = amount
-            } else {
-                itemList.remove(item)
+                (itemWithAmount ?: put(item)).amount = amount
+            } else if (itemWithAmount != null) {
+                itemList.remove(itemWithAmount)
             }
             DatabaseConnector.Chest.General.set(uuidPlayer, item, amount)
-            itemStackListCache = null
         }
 
-        fun getList(page: Int): List<ItemStack>? {
-            return itemStackList.slice(page, maxPage)
+        fun getList(page: Int): List<GeneralItemWithAmount>? {
+            return itemList.slice(page, maxPage)
+        }
+
+        enum class SortType {
+            Type,
+            Rarity;
+
+            fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
+                return when (this) {
+                    Type -> sortByType(itemList)
+                    Rarity -> sortByRarity(itemList)
+                }
+            }
+
+            companion object {
+                private fun sortByType(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
+                    return itemList.sortedBy { it.data }
+                }
+
+                private fun sortByRarity(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
+                    return itemList.sortedBy { it.data.rarity }
+                }
+            }
         }
     }
 
     data class Equip(override val uuidPlayer: UUIDPlayer): ItemChest {
         override val sizeColumnName = "Equip"
         override val defaultMaxPage = 2
-        private val itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
+        private var itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
+        var sortType: SortType = SortType.Type
+
+        fun sort() {
+            itemList = sortType.sort(itemList).toMutableList()
+        }
 
         fun add(item: EnhancedEquipItem) {
             itemList.add(item)
@@ -81,6 +118,51 @@ interface ItemChest {
 
         fun getList(page: Int): List<EnhancedEquipItem>? {
             return itemList.slice(page, maxPage)
+        }
+
+        enum class SortType {
+            Type,
+            Enhance,
+            Rarity,
+            Status;
+
+            fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                return when (this) {
+                    Type -> sortByType(itemList)
+                    Enhance -> sortByEnhance(itemList)
+                    Rarity -> sorByRarity(itemList)
+                    Status -> sortByStatus(itemList)
+                }
+            }
+
+            companion object {
+                private fun sortByType(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                    val groupByType = itemList.groupBy { it.data }
+                    return groupByType.values.map { sorByRarity(it) }.flatten()
+                }
+
+                private fun sortByEnhance(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                    return itemList.sortedBy { it.enhance }
+                }
+
+                private fun sorByRarity(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                    return itemList.sortedBy { it.data.rarity }
+                }
+
+                private fun sortByStatus(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                    val weaponList = mutableListOf<EnhancedWeaponItem>()
+                    val armorList = mutableListOf<EnhancedArmorItem>()
+                    itemList.forEach { item ->
+                        when (item) {
+                            is EnhancedWeaponItem -> weaponList.add(item)
+                            is EnhancedArmorItem -> armorList.add(item)
+                        }
+                    }
+                    weaponList.sortBy { it.data.damage * it.enhanceRate }
+                    armorList.sortBy { it.data.defense * it.enhanceRate }
+                    return weaponList + armorList
+                }
+            }
         }
     }
 
