@@ -219,7 +219,16 @@ interface ItemChest {
             return when {
                 page < 1 -> slice(1, maxPage)
                 maxPage != null && maxPage < page -> null
-                else -> slice(((page - 1) * 27) until (page * 27))
+                else -> {
+                    val mayBeBegin = (page - 1) * 27
+                    val mayBeEnd = page * 27
+                    val (begin, end) = when {
+                        size < mayBeBegin -> 0 to 1
+                        size < mayBeEnd -> mayBeBegin to size
+                        else -> mayBeBegin to mayBeEnd
+                    }
+                    slice(begin until end)
+                }
             }
         }
     }
