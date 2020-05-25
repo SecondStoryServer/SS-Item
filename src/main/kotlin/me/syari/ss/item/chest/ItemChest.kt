@@ -26,10 +26,20 @@ interface ItemChest {
         override val defaultMaxPage = 2
         private var itemList = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableList()
         var sortType = SortType.Type
+            set(value) {
+                if (value != field) {
+                    field = value
+                    sort()
+                }
+            }
         private var isSorted = false
 
         fun checkSort() {
             if (isSorted) return
+            sort()
+        }
+
+        private fun sort() {
             itemList = sortType.sort(itemList).toMutableList()
             isSorted = true
         }
@@ -106,10 +116,20 @@ interface ItemChest {
         override val defaultMaxPage = 2
         private var itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
         var sortType: SortType = SortType.Type
+            set(value) {
+                if (value != field) {
+                    field = value
+                    sort()
+                }
+            }
         private var isSorted = false
 
         fun checkSort() {
             if (isSorted) return
+            sort()
+        }
+
+        private fun sort() {
             itemList = sortType.sort(itemList).toMutableList()
             isSorted = true
         }
