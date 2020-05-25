@@ -10,13 +10,14 @@ import me.syari.ss.item.general.GeneralItem
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.meta.PotionMeta
 
 data class HealPotion(val size: Size): GeneralItem, ClickableItem {
     override val id = "potion-heal-${size.id}"
     override val material = Material.POTION
-    override val display = "&6回復ポーション &b〈${size.display}〉"
-    override val description = "体力を ${size.healPercent * 100}% 回復する"
+    override val display = "&6回復ポーション &b${size.display}"
+    override val description = "体力を ${String.format("%.0f", size.healPercent * 100)}% 回復する"
     override val sortNumber = 0
     override val rarity: ItemRarity? = null
     override val itemType = ItemType.Potion
@@ -27,6 +28,7 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
                 if (this is PotionMeta) {
                     color = Color.RED
                 }
+                addItemFlags(ItemFlag.HIDE_POTION_EFFECTS)
             }
         }
 
