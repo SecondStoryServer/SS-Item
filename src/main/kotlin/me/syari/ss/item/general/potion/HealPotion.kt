@@ -22,6 +22,7 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
     override val itemType = ItemType.Potion
     override val itemStack: CustomItemStack
         get() = super.itemStack.apply {
+            customModelData = size.customModelData
             editMeta {
                 if (this is PotionMeta) {
                     color = Color.RED
@@ -42,10 +43,12 @@ data class HealPotion(val size: Size): GeneralItem, ClickableItem {
         return false
     }
 
-    enum class Size(val id: String, val display: String, val healPercent: Double, val maxAmount: Int) {
-        Large("large", "大", 0.75, 5),
-        Medium("medium", "中", 0.50, 10),
-        Small("small", "小", 0.25, 15);
+    enum class Size(
+        val id: String, val display: String, val customModelData: Int, val healPercent: Double, val maxAmount: Int
+    ) {
+        Large("large", "大", 2, 0.75, 5),
+        Medium("medium", "中", 0, 0.50, 10),
+        Small("small", "小", 1, 0.25, 15);
 
         val item = HealPotion(this)
     }
