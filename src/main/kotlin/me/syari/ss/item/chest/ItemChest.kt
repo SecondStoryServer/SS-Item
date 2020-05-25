@@ -31,6 +31,7 @@ interface ItemChest {
         fun checkSort() {
             if (isSorted) return
             itemList = sortType.sort(itemList).toMutableList()
+            isSorted = true
         }
 
         fun get(item: GeneralItem): GeneralItemWithAmount? {
@@ -110,6 +111,7 @@ interface ItemChest {
         fun checkSort() {
             if (isSorted) return
             itemList = sortType.sort(itemList).toMutableList()
+            isSorted = true
         }
 
         fun add(item: EnhancedEquipItem) {
