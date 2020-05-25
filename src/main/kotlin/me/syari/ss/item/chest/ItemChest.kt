@@ -26,8 +26,10 @@ interface ItemChest {
         override val defaultMaxPage = 2
         private var itemList = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableList()
         var sortType = SortType.Type
+        private var isSorted = false
 
-        fun sort() {
+        fun checkSort() {
+            if (isSorted) return
             itemList = sortType.sort(itemList).toMutableList()
         }
 
@@ -36,6 +38,7 @@ interface ItemChest {
         }
 
         private fun put(item: GeneralItem): GeneralItemWithAmount {
+            if (isSorted) isSorted = false
             return GeneralItemWithAmount(item, 0).apply {
                 itemList.add(this)
             }
@@ -64,6 +67,7 @@ interface ItemChest {
             if (0 < amount) {
                 (itemWithAmount ?: put(item)).amount = amount
             } else if (itemWithAmount != null) {
+                if (isSorted) isSorted = false
                 itemList.remove(itemWithAmount)
             }
             DatabaseConnector.Chest.General.set(uuidPlayer, item, amount)
@@ -101,17 +105,21 @@ interface ItemChest {
         override val defaultMaxPage = 2
         private var itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
         var sortType: SortType = SortType.Type
+        private var isSorted = false
 
-        fun sort() {
+        fun checkSort() {
+            if (isSorted) return
             itemList = sortType.sort(itemList).toMutableList()
         }
 
         fun add(item: EnhancedEquipItem) {
+            if (isSorted) isSorted = false
             itemList.add(item)
             DatabaseConnector.Chest.Equip.add(uuidPlayer, item)
         }
 
         fun remove(item: EnhancedEquipItem) {
+            if (isSorted) isSorted = false
             itemList.remove(item)
             DatabaseConnector.Chest.Equip.remove(uuidPlayer, item)
         }
