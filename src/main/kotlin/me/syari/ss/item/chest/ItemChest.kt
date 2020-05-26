@@ -83,23 +83,17 @@ interface ItemChest {
             return itemList.slice(page, maxPage)
         }
 
-        enum class SortType {
-            Type,
-            Rarity;
+        interface SortType {
+            fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount>
 
-            fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
-                return when (this) {
-                    Type -> sortByType(itemList)
-                    Rarity -> sortByRarity(itemList)
+            object Type: SortType {
+                override fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
+                    return itemList.sortedBy { it.data }
                 }
             }
 
-            companion object {
-                private fun sortByType(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
-                    return itemList.sortedBy { it.data }
-                }
-
-                private fun sortByRarity(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
+            object Rarity: SortType {
+                override fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
                     return itemList.sortedBy { it.data.rarity }
                 }
             }
@@ -140,36 +134,30 @@ interface ItemChest {
             return itemList.slice(page, maxPage)
         }
 
-        enum class SortType {
-            Type,
-            Enhance,
-            Rarity,
-            Status;
+        interface SortType {
+            fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem>
 
-            fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
-                return when (this) {
-                    Type -> sortByType(itemList)
-                    Enhance -> sortByEnhance(itemList)
-                    Rarity -> sorByRarity(itemList)
-                    Status -> sortByStatus(itemList)
+            object Type: SortType {
+                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                    val groupByType = itemList.groupBy { it.data }
+                    return groupByType.values.map { Rarity.sort(it) }.flatten()
                 }
             }
 
-            companion object {
-                private fun sortByType(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
-                    val groupByType = itemList.groupBy { it.data }
-                    return groupByType.values.map { sorByRarity(it) }.flatten()
-                }
-
-                private fun sortByEnhance(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+            object Enhance: SortType {
+                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
                     return itemList.sortedBy { it.enhance }
                 }
+            }
 
-                private fun sorByRarity(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+            object Rarity: SortType {
+                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
                     return itemList.sortedBy { it.data.rarity }
                 }
+            }
 
-                private fun sortByStatus(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+            object Status: SortType {
+                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
                     val weaponList = mutableListOf<EnhancedWeaponItem>()
                     val armorList = mutableListOf<EnhancedArmorItem>()
                     itemList.forEach { item ->
