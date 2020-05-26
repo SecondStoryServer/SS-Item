@@ -25,7 +25,7 @@ interface ItemChest {
         override val sizeColumnName = "General"
         override val defaultMaxPage = 2
         private var itemList = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableList()
-        var sortType = SortType.Type
+        var sortType: SortType = SortType.Type
             set(value) {
                 if (field == value) return
                 field = value
@@ -178,7 +178,7 @@ interface ItemChest {
         override val sizeColumnName: String? = null
         override val defaultMaxPage = 1
         private val itemList = DatabaseConnector.Chest.Compass.get(uuidPlayer).toMutableSet()
-        var displayMode = DisplayMode.Both
+        var displayMode: DisplayMode = DisplayMode.Both
 
         fun has(item: CompassItem): Boolean {
             return itemList.contains(item)
