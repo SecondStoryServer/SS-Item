@@ -178,6 +178,7 @@ interface ItemChest {
         override val sizeColumnName: String? = null
         override val defaultMaxPage = 1
         private val itemList = DatabaseConnector.Chest.Compass.get(uuidPlayer).toMutableSet()
+        var displayMode = DisplayMode.Both
 
         fun has(item: CompassItem): Boolean {
             return itemList.contains(item)
@@ -198,7 +199,23 @@ interface ItemChest {
         }
 
         fun getList(page: Int): Map<CompassItem, Boolean>? {
-            return allCompass.slice(page, maxPage)?.associate { it to has(it) }
+            return displayMode.getList(this, page)
+        }
+
+        interface DisplayMode {
+            fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>?
+
+            object Both: DisplayMode {
+                override fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>? {
+                    return allCompass.slice(page, chest.maxPage)?.associate { it to chest.has(it) }
+                }
+            }
+
+            object OnlyHave: DisplayMode {
+                override fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>? {
+                    return allCompass.filter { chest.has(it) }.map { it to true }.toMap()
+                }
+            }
         }
     }
 
