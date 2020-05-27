@@ -12,8 +12,8 @@ data class CompassItem(
 ): CustomItem {
     override val itemType = ItemType.Compass
     override val material = Material.COMPASS
-    override val display = "&6コンパス &a$teleportTo"
-    override val description = "船を借りることで出来れば、$teleportTo へ行くことが出来る"
+    override val display = "&a$teleportToName"
+    override val description = "船をがあれば、$teleportToName へ行くことが出来る"
     override val rarity: ItemRarity? = null
 
     override fun register() {
