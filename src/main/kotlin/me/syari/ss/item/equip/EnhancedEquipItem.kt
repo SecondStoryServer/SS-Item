@@ -5,7 +5,7 @@ import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
 import org.bukkit.persistence.PersistentDataType
 
-open class EnhancedEquipItem(
+open class EnhancedEquipItem internal constructor(
     open val data: EquipItem, val enhance: Int
 ) {
     open val statusChange = mapOf<StatusType, Pair<String, Float>>()
