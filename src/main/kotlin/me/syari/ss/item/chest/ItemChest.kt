@@ -32,11 +32,17 @@ interface ItemChest {
                 field = value
                 isSorted = false
             }
+        var isReverse = false
+            set(value) {
+                if (field == value) return
+                field = value
+                isSorted = false
+            }
         var isSorted = false
             private set
 
         fun sort() {
-            itemList = sortType.sort(itemList).toMutableList()
+            itemList = sortType.sort(itemList, isReverse).toMutableList()
             isSorted = true
         }
 
@@ -86,17 +92,21 @@ interface ItemChest {
         }
 
         interface SortType {
-            fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount>
+            fun sort(itemList: List<GeneralItemWithAmount>, isReverse: Boolean): List<GeneralItemWithAmount>
 
             object Type: SortType {
-                override fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
-                    return itemList.sortedBy { it.data }
+                override fun sort(
+                    itemList: List<GeneralItemWithAmount>, isReverse: Boolean
+                ): List<GeneralItemWithAmount> {
+                    return itemList.sortedBy(isReverse) { it.data }
                 }
             }
 
             object Rarity: SortType {
-                override fun sort(itemList: List<GeneralItemWithAmount>): List<GeneralItemWithAmount> {
-                    return itemList.sortedBy { it.data.rarity }
+                override fun sort(
+                    itemList: List<GeneralItemWithAmount>, isReverse: Boolean
+                ): List<GeneralItemWithAmount> {
+                    return itemList.sortedBy(isReverse) { it.data.rarity }
                 }
             }
         }
@@ -112,11 +122,17 @@ interface ItemChest {
                 field = value
                 isSorted = false
             }
+        var isReverse = false
+            set(value) {
+                if (field == value) return
+                field = value
+                isSorted = false
+            }
         var isSorted = false
             private set
 
         fun sort() {
-            itemList = sortType.sort(itemList).toMutableList()
+            itemList = sortType.sort(itemList, isReverse).toMutableList()
             isSorted = true
         }
 
@@ -137,29 +153,39 @@ interface ItemChest {
         }
 
         interface SortType {
-            fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem>
+            fun sort(
+                itemList: List<EnhancedEquipItem>, isReverse: Boolean
+            ): List<EnhancedEquipItem>
 
             object Type: SortType {
-                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                override fun sort(
+                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                ): List<EnhancedEquipItem> {
                     val groupByType = itemList.groupBy { it.data }
-                    return groupByType.values.map { Rarity.sort(it) }.flatten()
+                    return groupByType.values.map { Rarity.sort(it, isReverse) }.flatten()
                 }
             }
 
             object Enhance: SortType {
-                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
-                    return itemList.sortedBy { it.enhance }
+                override fun sort(
+                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                ): List<EnhancedEquipItem> {
+                    return itemList.sortedBy(isReverse) { it.enhance }
                 }
             }
 
             object Rarity: SortType {
-                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
-                    return itemList.sortedBy { it.data.rarity }
+                override fun sort(
+                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                ): List<EnhancedEquipItem> {
+                    return itemList.sortedBy(isReverse) { it.data.rarity }
                 }
             }
 
             object Status: SortType {
-                override fun sort(itemList: List<EnhancedEquipItem>): List<EnhancedEquipItem> {
+                override fun sort(
+                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                ): List<EnhancedEquipItem> {
                     val weaponList = mutableListOf<EnhancedWeaponItem>()
                     val armorList = mutableListOf<EnhancedArmorItem>()
                     itemList.forEach { item ->
@@ -168,8 +194,8 @@ interface ItemChest {
                             is EnhancedArmorItem -> armorList.add(item)
                         }
                     }
-                    weaponList.sortBy { it.data.damage * it.enhanceRate }
-                    armorList.sortBy { it.data.defense * it.enhanceRate }
+                    weaponList.sortBy(isReverse) { it.data.damage * it.enhanceRate }
+                    armorList.sortBy(isReverse) { it.data.defense * it.enhanceRate }
                     return weaponList + armorList
                 }
             }
@@ -222,7 +248,7 @@ interface ItemChest {
     }
 
     private companion object {
-        private fun <T> List<T>.slice(page: Int, maxPage: Int?): List<T>? {
+        fun <T> List<T>.slice(page: Int, maxPage: Int?): List<T>? {
             return when {
                 page < 1 -> slice(1, maxPage)
                 maxPage != null && maxPage < page -> null
@@ -237,6 +263,18 @@ interface ItemChest {
                     slice(begin until end)
                 }
             }
+        }
+
+        inline fun <T, R: Comparable<R>> MutableList<T>.sortBy(
+            isReverse: Boolean, crossinline selector: (T) -> R?
+        ) {
+            if (isReverse) sortByDescending(selector) else sortBy(selector)
+        }
+
+        inline fun <T, R: Comparable<R>> Iterable<T>.sortedBy(
+            isReverse: Boolean, crossinline selector: (T) -> R?
+        ): List<T> {
+            return if (isReverse) sortedByDescending(selector) else sortedBy(selector)
         }
     }
 }
