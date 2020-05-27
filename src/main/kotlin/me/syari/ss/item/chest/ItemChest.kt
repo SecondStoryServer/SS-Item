@@ -287,13 +287,14 @@ interface ItemChest {
         inline fun <T, R: Comparable<R>> MutableList<T>.sortBy(
             isReverse: Boolean, crossinline selector: (T) -> R?
         ) {
-            if (isReverse) sortByDescending(selector) else sortBy(selector)
+            sortBy(selector)
+            if (isReverse) reverse()
         }
 
         inline fun <T, R: Comparable<R>> Iterable<T>.sortedBy(
             isReverse: Boolean, crossinline selector: (T) -> R?
         ): List<T> {
-            return if (isReverse) sortedByDescending(selector) else sortedBy(selector)
+            return if (isReverse) sortedBy(selector).reversed() else sortedBy(selector)
         }
     }
 }
