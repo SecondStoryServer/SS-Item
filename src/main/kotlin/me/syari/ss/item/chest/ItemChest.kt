@@ -94,6 +94,11 @@ interface ItemChest {
         interface SortType {
             fun sort(itemList: List<GeneralItemWithAmount>, isReverse: Boolean): List<GeneralItemWithAmount>
 
+            val isType
+                get() = this == Type
+            val isRarity
+                get() = this == Rarity
+
             object Type: SortType {
                 override fun sort(
                     itemList: List<GeneralItemWithAmount>, isReverse: Boolean
@@ -156,6 +161,15 @@ interface ItemChest {
             fun sort(
                 itemList: List<EnhancedEquipItem>, isReverse: Boolean
             ): List<EnhancedEquipItem>
+
+            val isType
+                get() = this == Type
+            val isEnhance
+                get() = this == Enhance
+            val isRarity
+                get() = this == Rarity
+            val isStatus
+                get() = this == Status
 
             object Type: SortType {
                 override fun sort(
@@ -232,6 +246,11 @@ interface ItemChest {
 
         interface DisplayMode {
             fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>?
+
+            val isBoth
+                get() = this == Both
+            val isOnlyHave
+                get() = this == OnlyHave
 
             object Both: DisplayMode {
                 override fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>? {
