@@ -275,7 +275,7 @@ interface ItemChest {
                     val mayBeBegin = (page - 1) * 27
                     val mayBeEnd = page * 27
                     val (begin, end) = when {
-                        size < mayBeBegin -> 0 to 1
+                        size < mayBeBegin -> 0 to 0
                         size < mayBeEnd -> mayBeBegin to size
                         else -> mayBeBegin to mayBeEnd
                     }
