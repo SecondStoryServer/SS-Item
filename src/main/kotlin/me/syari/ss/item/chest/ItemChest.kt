@@ -24,7 +24,8 @@ interface ItemChest {
     data class General(override val uuidPlayer: UUIDPlayer): ItemChest {
         override val sizeColumnName = "General"
         override val defaultMaxPage = 2
-        private var itemList = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableList()
+        private val itemMap = DatabaseConnector.Chest.General.get(uuidPlayer).toMutableMap()
+        private var itemList = itemMap.values.toMutableList()
         var sortType: SortType = SortType.Type
             set(value) {
                 if (field == value) return
@@ -40,13 +41,14 @@ interface ItemChest {
         }
 
         fun get(item: GeneralItem): GeneralItemWithAmount? {
-            return itemList.firstOrNull { it.data == item }
+            return itemMap[item]
         }
 
         private fun put(item: GeneralItem): GeneralItemWithAmount {
             if (isSorted) isSorted = false
             return GeneralItemWithAmount(item, 0).apply {
                 itemList.add(this)
+                itemMap[item] = this
             }
         }
 

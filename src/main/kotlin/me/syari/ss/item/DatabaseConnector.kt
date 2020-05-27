@@ -110,7 +110,7 @@ object DatabaseConnector: OnEnable {
                 )
             }
 
-            fun get(uuidPlayer: UUIDPlayer): List<GeneralItemWithAmount> {
+            fun get(uuidPlayer: UUIDPlayer): Map<GeneralItem, GeneralItemWithAmount> {
                 val map = mutableMapOf<GeneralItem, Int>()
                 sql?.use {
                     val result = executeQuery(

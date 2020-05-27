@@ -36,7 +36,10 @@ class EnhancedWeaponItem(
                 editMeta {
                     val modifier = AttributeModifier(
                         UUID.randomUUID(),
-                        "ss-item", changeAttackSpeed, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND
+                        "ss-item",
+                        changeAttackSpeed,
+                        AttributeModifier.Operation.ADD_NUMBER,
+                        EquipmentSlot.HAND
                     )
                     addAttributeModifier(Attribute.GENERIC_ATTACK_SPEED, modifier)
                     addItemFlags(ItemFlag.HIDE_ATTRIBUTES)
