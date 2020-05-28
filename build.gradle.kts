@@ -9,13 +9,18 @@ plugins {
 group = "me.syari.ss.item"
 version = "1.0"
 
+val ssMavenRepoURL: String by extra
+val ssMavenRepoUploadURL: String by extra
+val ssMavenRepoUploadUser: String by extra
+val ssMavenRepoUploadPassword: String by extra
+
 repositories {
     mavenCentral()
     maven {
         url = uri("https://papermc.io/repo/repository/maven-public/")
     }
     maven {
-        url = uri(properties["ssMavenRepoURL"] as String)
+        url = uri(ssMavenRepoURL)
     }
 }
 
@@ -56,10 +61,10 @@ val sourceJar by tasks.registering(Jar::class) {
 publishing {
     repositories {
         maven {
-            url = uri(properties["ssMavenRepoUploadURL"] as String)
+            url = uri(ssMavenRepoUploadURL)
             credentials {
-                username = properties["ssMavenRepoUploadUser"] as String
-                password = properties["ssMavenRepoUploadPassword"] as String
+                username = ssMavenRepoUploadUser
+                password = ssMavenRepoUploadPassword
             }
         }
     }
