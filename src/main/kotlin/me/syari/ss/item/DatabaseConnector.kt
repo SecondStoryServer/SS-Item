@@ -24,6 +24,7 @@ object DatabaseConnector: OnEnable {
             Chest.General.createTable(this)
             Chest.Equip.createTable(this)
             Chest.Compass.createTable(this)
+            VanillaInventory.createTable(this)
         }
     }
 
@@ -270,6 +271,57 @@ object DatabaseConnector: OnEnable {
                                     UUID = '$uuidPlayer'
                                 AND
                                     ItemID = '${item.id}'
+                            LIMIT 1;
+                        """.trimIndent()
+                    )
+                }
+            }
+        }
+    }
+
+    object VanillaInventory {
+        fun createTable(statement: Statement) {
+            statement.executeUpdate(
+                """
+                    CREATE TABLE IF NOT EXISTS VanillaInventory(
+                        UUID VARCHAR(36) PRIMARY KEY,
+                        Base64 LONGTEXT
+                    );
+                """.trimIndent()
+            )
+        }
+
+        fun getBase64(uuidPlayer: UUIDPlayer): String? {
+            var base64: String? = null
+            sql?.use {
+                val result = executeQuery(
+                    """
+                        SELECT Base64 FROM VanillaInventory WHERE UUID = '$uuidPlayer' LIMIT 1;
+                    """.trimIndent()
+                )
+                if (result.next()) {
+                    base64 = result.getString(1)
+                }
+            }
+            return base64
+        }
+
+        fun setBase64(uuidPlayer: UUIDPlayer, base64: String?) {
+            sql?.use {
+                if (base64 != null) {
+                    executeUpdate(
+                        """
+                            INSERT INTO VanillaInventory VALUE (
+                                '$uuidPlayer',
+                                '$base64
+                            ) ON DUPLICATE KEY UPDATE Base64 = $base64;
+                        """.trimIndent()
+                    )
+                } else {
+                    executeUpdate(
+                        """
+                            DELETE FROM VanillaInventory
+                                WHERE UUID = '$uuidPlayer'
                             LIMIT 1;
                         """.trimIndent()
                     )
