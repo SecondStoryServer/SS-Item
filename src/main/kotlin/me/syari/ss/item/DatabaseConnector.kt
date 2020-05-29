@@ -2,6 +2,10 @@ package me.syari.ss.item
 
 import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.core.player.UUIDPlayer
+import me.syari.ss.core.sql.Database.Companion.asListNotNull
+import me.syari.ss.core.sql.Database.Companion.asMapNotNull
+import me.syari.ss.core.sql.Database.Companion.asSetNotNull
+import me.syari.ss.core.sql.Database.Companion.nextOrNull
 import me.syari.ss.core.sql.MySQL
 import me.syari.ss.item.chest.ItemChest
 import me.syari.ss.item.compass.CompassItem
@@ -50,8 +54,7 @@ object DatabaseConnector: OnEnable {
             }
 
             private fun getFromSQL(uuidPlayer: UUIDPlayer, chest: ItemChest): Int? {
-                var maxPage: Int? = null
-                sql?.use {
+                return sql?.use {
                     val result = executeQuery(
                         """
                             SELECT Size FROM MaxPage
@@ -62,11 +65,10 @@ object DatabaseConnector: OnEnable {
                             LIMIT 1;
                         """.trimIndent()
                     )
-                    if (result.next()) {
-                        maxPage = result.getInt(1)
+                    result.nextOrNull {
+                        result.getInt(1)
                     }
                 }
-                return maxPage
             }
 
             fun set(uuidPlayer: UUIDPlayer, chest: ItemChest, size: Int?) {
@@ -112,19 +114,21 @@ object DatabaseConnector: OnEnable {
             }
 
             fun get(uuidPlayer: UUIDPlayer): Map<GeneralItem, GeneralItemWithAmount> {
-                val map = mutableMapOf<GeneralItem, Int>()
-                sql?.use {
+                val map = sql?.use {
                     val result = executeQuery(
                         """
                             SELECT ItemID, Amount FROM GeneralItemChest WHERE UUID = '$uuidPlayer';
                         """.trimIndent()
                     )
-                    while (result.next()) {
-                        GeneralItem.from(result.getString(1))?.let { item ->
-                            map[item] = result.getInt(2)
+                    result.asMapNotNull {
+                        val item = GeneralItem.from(result.getString(1))
+                        if (item != null) {
+                            item to result.getInt(2)
+                        } else {
+                            null
                         }
                     }
-                }
+                } ?: emptyMap()
                 return GeneralItemWithAmount.from(map)
             }
 
@@ -170,21 +174,19 @@ object DatabaseConnector: OnEnable {
             }
 
             fun get(uuidPlayer: UUIDPlayer): List<EnhancedEquipItem> {
-                val list = mutableListOf<EnhancedEquipItem>()
-                sql?.use {
+                return sql?.use {
                     val result = executeQuery(
                         """
                             SELECT ItemID, Enhance FROM EquipItemChest WHERE UUID = '$uuidPlayer';
                         """.trimIndent()
                     )
-                    while (result.next()) {
+                    result.asListNotNull {
                         EquipItem.from(result.getString(1))?.let { item ->
                             val enhance = result.getInt(2)
-                            list.add(EnhancedEquipItem(item, enhance))
+                            EnhancedEquipItem(item, enhance)
                         }
                     }
-                }
-                return list
+                } ?: emptyList()
             }
 
             fun add(uuidPlayer: UUIDPlayer, item: EnhancedEquipItem) {
@@ -233,20 +235,16 @@ object DatabaseConnector: OnEnable {
             }
 
             fun get(uuidPlayer: UUIDPlayer): Set<CompassItem> {
-                val list = mutableSetOf<CompassItem>()
-                sql?.use {
+                return sql?.use {
                     val result = executeQuery(
                         """
                             SELECT ItemID FROM CompassItemChest WHERE UUID = '$uuidPlayer';
                         """.trimIndent()
                     )
-                    while (result.next()) {
-                        CompassItem.from(result.getString(1))?.let { item ->
-                            list.add(item)
-                        }
+                    result.asSetNotNull {
+                        CompassItem.from(result.getString(1))
                     }
-                }
-                return list
+                } ?: emptySet()
             }
 
             fun add(uuidPlayer: UUIDPlayer, item: CompassItem) {
@@ -292,18 +290,16 @@ object DatabaseConnector: OnEnable {
         }
 
         fun getBase64(uuidPlayer: UUIDPlayer): String? {
-            var base64: String? = null
-            sql?.use {
+            return sql?.use {
                 val result = executeQuery(
                     """
                         SELECT Base64 FROM VanillaInventory WHERE UUID = '$uuidPlayer' LIMIT 1;
                     """.trimIndent()
                 )
-                if (result.next()) {
-                    base64 = result.getString(1)
+                result.nextOrNull {
+                    getString(1)
                 }
             }
-            return base64
         }
 
         fun setBase64(uuidPlayer: UUIDPlayer, base64: String?) {
