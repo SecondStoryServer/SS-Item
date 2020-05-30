@@ -72,8 +72,8 @@ object DatabaseConnector: OnEnable {
             }
 
             fun set(uuidPlayer: UUIDPlayer, chest: ItemChest, size: Int?) {
-                sql?.use {
-                    if (size != null) {
+                if (size != null) {
+                    sql?.use {
                         executeUpdate(
                             """
                                 INSERT INTO MaxPage VALUE (
@@ -83,18 +83,34 @@ object DatabaseConnector: OnEnable {
                                 ) ON DUPLICATE KEY UPDATE Size = $size;
                             """.trimIndent()
                         )
-                    } else {
-                        executeUpdate(
-                            """
-                                DELETE FROM MaxPage
-                                    WHERE
-                                        UUID = '$uuidPlayer'
-                                    AND
-                                        ChestName = '${chest.sizeColumnName}'
-                                LIMIT 1;
-                            """.trimIndent()
-                        )
                     }
+                } else {
+                    delete(uuidPlayer, chest)
+                }
+            }
+
+            fun delete(uuidPlayer: UUIDPlayer, chest: ItemChest) {
+                sql?.use {
+                    executeUpdate(
+                        """
+                        DELETE FROM MaxPage
+                            WHERE
+                                UUID = '$uuidPlayer'
+                            AND
+                                ChestName = '${chest.sizeColumnName}'
+                            LIMIT 1;
+                        """.trimIndent()
+                    )
+                }
+            }
+
+            fun delete(uuidPlayer: UUIDPlayer) {
+                sql?.use {
+                    executeUpdate(
+                        """
+                        DELETE FROM MaxPage WHERE UUID = '$uuidPlayer' LIMIT 1;
+                    """.trimIndent()
+                    )
                 }
             }
         }
@@ -158,6 +174,16 @@ object DatabaseConnector: OnEnable {
                     }
                 }
             }
+
+            fun delete(uuidPlayer: UUIDPlayer) {
+                sql?.use {
+                    executeUpdate(
+                        """
+                        DELETE FROM GeneralItemChest WHERE UUID = '$uuidPlayer' LIMIT 1;
+                    """.trimIndent()
+                    )
+                }
+            }
         }
 
         object Equip {
@@ -219,6 +245,16 @@ object DatabaseConnector: OnEnable {
                     )
                 }
             }
+
+            fun delete(uuidPlayer: UUIDPlayer) {
+                sql?.use {
+                    executeUpdate(
+                        """
+                        DELETE FROM CompassItemChest WHERE UUID = '$uuidPlayer' LIMIT 1;
+                    """.trimIndent()
+                    )
+                }
+            }
         }
 
         object Compass {
@@ -274,6 +310,16 @@ object DatabaseConnector: OnEnable {
                     )
                 }
             }
+
+            fun delete(uuidPlayer: UUIDPlayer) {
+                sql?.use {
+                    executeUpdate(
+                        """
+                        DELETE FROM CompassItemChest WHERE UUID = '$uuidPlayer' LIMIT 1;
+                    """.trimIndent()
+                    )
+                }
+            }
         }
     }
 
@@ -303,8 +349,8 @@ object DatabaseConnector: OnEnable {
         }
 
         fun setBase64(uuidPlayer: UUIDPlayer, base64: String?) {
-            sql?.use {
-                if (base64 != null) {
+            if (base64 != null) {
+                sql?.use {
                     executeUpdate(
                         """
                             INSERT INTO VanillaInventory VALUE (
@@ -313,15 +359,19 @@ object DatabaseConnector: OnEnable {
                             ) ON DUPLICATE KEY UPDATE Base64 = $base64;
                         """.trimIndent()
                     )
-                } else {
-                    executeUpdate(
-                        """
-                            DELETE FROM VanillaInventory
-                                WHERE UUID = '$uuidPlayer'
-                            LIMIT 1;
-                        """.trimIndent()
-                    )
                 }
+            } else {
+                delete(uuidPlayer)
+            }
+        }
+
+        fun delete(uuidPlayer: UUIDPlayer) {
+            sql?.use {
+                executeUpdate(
+                    """
+                        DELETE FROM VanillaInventory WHERE UUID = '$uuidPlayer' LIMIT 1;
+                    """.trimIndent()
+                )
             }
         }
     }
