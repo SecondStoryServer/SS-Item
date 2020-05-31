@@ -12,13 +12,13 @@ object ConfigLoader: OnEnable {
         loadConfig(Main.console)
     }
 
+    private val defaultConfig = mapOf(
+        "sql.host" to "localhost", "sql.port" to 3306, "sql.database" to "", "sql.user" to "", "sql.password" to ""
+    )
+
     fun loadConfig(output: CommandSender) {
-        config(
-            itemPlugin, output, "config.yml"
-        ) {
-            DatabaseConnector.sql = get(
-                "sql", ConfigDataType.MYSQL
-            )
+        config(itemPlugin, output, "config.yml", default = defaultConfig) {
+            DatabaseConnector.sql = get("sql", ConfigDataType.MYSQL)
         }
     }
 }
