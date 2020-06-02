@@ -14,7 +14,7 @@ data class PlayerChestData(val uuidPlayer: UUIDPlayer) {
         val OfflinePlayer.chestData
             get() = UUIDPlayer(this).chestData
 
-        private val UUIDPlayer.chestData
+        val UUIDPlayer.chestData
             get() = chestDataMap.getOrPut(this) { PlayerChestData(this) }
     }
 }

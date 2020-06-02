@@ -3,8 +3,8 @@ package me.syari.ss.item.holder
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
 import me.syari.ss.item.itemRegister.custom.CustomItem
-import me.syari.ss.item.itemRegister.equip.armor.ArmorItem
-import me.syari.ss.item.itemRegister.equip.weapon.WeaponItem
+import me.syari.ss.item.itemRegister.equip.armor.EnhancedArmorItem
+import me.syari.ss.item.itemRegister.equip.weapon.EnhancedWeaponItem
 import org.bukkit.OfflinePlayer
 
 data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
@@ -33,15 +33,15 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
             setNormalItem(OFFHAND_SLOT, value)
         }
 
-    var extraWeaponItem = listOf<WeaponItem>()
+    var extraWeaponItem = listOf<EnhancedWeaponItem>()
 
-    private val armorList = mutableMapOf<ArmorSlot, ArmorItem>()
+    private val armorList = mutableMapOf<ArmorSlot, EnhancedArmorItem>()
 
-    fun getArmorItem(armorSlot: ArmorSlot): ArmorItem? {
+    fun getArmorItem(armorSlot: ArmorSlot): EnhancedArmorItem? {
         return armorList[armorSlot]
     }
 
-    fun setArmorItem(armorSlot: ArmorSlot, item: ArmorItem?) {
+    fun setArmorItem(armorSlot: ArmorSlot, item: EnhancedArmorItem?) {
         if (item != null) {
             armorList[armorSlot] = item
         } else {

@@ -8,11 +8,14 @@ import me.syari.ss.core.sql.Database.Companion.asSetNotNull
 import me.syari.ss.core.sql.Database.Companion.nextOrNull
 import me.syari.ss.core.sql.MySQL
 import me.syari.ss.item.chest.ItemChest
+import me.syari.ss.item.chest.PlayerChestData.Companion.chestData
 import me.syari.ss.item.holder.ItemHolder
 import me.syari.ss.item.itemRegister.compass.CompassItem
 import me.syari.ss.item.itemRegister.custom.CustomItem
 import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem
 import me.syari.ss.item.itemRegister.equip.EquipItem
+import me.syari.ss.item.itemRegister.equip.armor.EnhancedArmorItem
+import me.syari.ss.item.itemRegister.equip.weapon.EnhancedWeaponItem
 import me.syari.ss.item.itemRegister.general.GeneralItem
 import me.syari.ss.item.itemRegister.general.GeneralItemWithAmount
 import java.sql.Statement
@@ -401,28 +404,40 @@ object DatabaseConnector: OnEnable {
                             SELECT Type, ID, Slot FROM ItemHolder WHERE UUID = '$uuidPlayer';
                         """.trimIndent()
                     )
-                    while (result.next()) {
+                    loop@ while (result.next()) {
                         val typeName = result.getString(1)
                         val id = result.getString(2)
                         val slot = result.getInt(3)
+                        val newExtraWeaponItem = mutableMapOf<Int, EnhancedWeaponItem>()
                         when (ItemHolder.Type.valueOf(typeName)) {
                             ItemHolder.Type.Normal -> {
-                                val item = CustomItem.from(id)
-                                if (item != null) {
-                                    setNormalItem(slot, item)
+                                val item = CustomItem.from(id) ?: continue@loop
+                                setNormalItem(slot, item)
+                            }
+                            ItemHolder.Type.Armor, ItemHolder.Type.ExtraWeapon -> {
+                                val armorSlot = ItemHolder.ArmorSlot.getBySlot(slot)
+                                val uuid = UUID.fromString(id)
+                                val item = uuidPlayer.chestData.equip.getItem(uuid) ?: continue@loop
+                                if (armorSlot != null) {
+                                    if (item !is EnhancedArmorItem) continue@loop
+                                    setArmorItem(armorSlot, item)
+                                } else {
+                                    if (item !is EnhancedWeaponItem) continue@loop
+                                    newExtraWeaponItem[slot] = item
                                 }
                             }
-                            ItemHolder.Type.Armor -> {
-                                val armorSlot = ItemHolder.ArmorSlot.getBySlot(slot)
-
-                            }
-                            ItemHolder.Type.ExtraWeapon -> {
-
-                            }
                         }
+                        extraWeaponItem = newExtraWeaponItem.toSortedMap().values.toList()
                     }
                 }
             }
         }
+    }
+
+    fun main() {
+        val map = mutableMapOf<Int, Int>()
+        map[2] = 5
+        map[1] = 3
+        println(map.toList())
     }
 }
