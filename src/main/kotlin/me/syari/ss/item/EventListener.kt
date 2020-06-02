@@ -11,10 +11,10 @@ import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.core.scheduler.CustomScheduler.runLater
 import me.syari.ss.item.Main.Companion.itemPlugin
-import me.syari.ss.item.custom.ClickableItem
-import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.equip.weapon.indirect.BowItem
-import me.syari.ss.item.equip.weapon.melee.MeleeItem
+import me.syari.ss.item.itemRegister.custom.ClickableItem
+import me.syari.ss.item.itemRegister.custom.CustomItem
+import me.syari.ss.item.itemRegister.equip.weapon.indirect.BowItem
+import me.syari.ss.item.itemRegister.equip.weapon.melee.MeleeItem
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player

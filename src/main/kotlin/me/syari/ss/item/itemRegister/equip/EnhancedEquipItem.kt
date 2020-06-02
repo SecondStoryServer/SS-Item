@@ -1,4 +1,4 @@
-package me.syari.ss.item.equip
+package me.syari.ss.item.itemRegister.equip
 
 import me.syari.ss.battle.status.StatusType
 import me.syari.ss.core.item.CustomItemStack

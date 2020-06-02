@@ -1,15 +1,15 @@
-package me.syari.ss.item.equip.weapon
+package me.syari.ss.item.itemRegister.equip.weapon
 
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.ItemRarity
-import me.syari.ss.item.custom.ItemType
-import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhance
-import me.syari.ss.item.equip.EquipItem
-import me.syari.ss.item.equip.weapon.indirect.BowItem
-import me.syari.ss.item.equip.weapon.indirect.HarpItem
-import me.syari.ss.item.equip.weapon.indirect.WandItem
-import me.syari.ss.item.equip.weapon.melee.MeleeItem
+import me.syari.ss.item.itemRegister.custom.ItemType
+import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem.Companion.getEnhance
+import me.syari.ss.item.itemRegister.equip.EquipItem
+import me.syari.ss.item.itemRegister.equip.weapon.indirect.BowItem
+import me.syari.ss.item.itemRegister.equip.weapon.indirect.HarpItem
+import me.syari.ss.item.itemRegister.equip.weapon.indirect.WandItem
+import me.syari.ss.item.itemRegister.equip.weapon.melee.MeleeItem
 import org.bukkit.Material
 import java.util.UUID
 

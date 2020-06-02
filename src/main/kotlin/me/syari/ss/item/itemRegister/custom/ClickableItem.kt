@@ -1,4 +1,4 @@
-package me.syari.ss.item.custom
+package me.syari.ss.item.itemRegister.custom
 
 import me.syari.ss.core.item.CustomItemStack
 import org.bukkit.entity.Player

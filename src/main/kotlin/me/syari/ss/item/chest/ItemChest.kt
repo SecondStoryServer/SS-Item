@@ -2,13 +2,13 @@ package me.syari.ss.item.chest
 
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
-import me.syari.ss.item.compass.CompassItem
-import me.syari.ss.item.compass.CompassItem.Companion.allCompass
-import me.syari.ss.item.equip.EnhancedEquipItem
-import me.syari.ss.item.equip.armor.EnhancedArmorItem
-import me.syari.ss.item.equip.weapon.EnhancedWeaponItem
-import me.syari.ss.item.general.GeneralItem
-import me.syari.ss.item.general.GeneralItemWithAmount
+import me.syari.ss.item.itemRegister.compass.CompassItem
+import me.syari.ss.item.itemRegister.compass.CompassItem.Companion.allCompass
+import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem
+import me.syari.ss.item.itemRegister.equip.armor.EnhancedArmorItem
+import me.syari.ss.item.itemRegister.equip.weapon.EnhancedWeaponItem
+import me.syari.ss.item.itemRegister.general.GeneralItem
+import me.syari.ss.item.itemRegister.general.GeneralItemWithAmount
 
 interface ItemChest {
     val uuidPlayer: UUIDPlayer

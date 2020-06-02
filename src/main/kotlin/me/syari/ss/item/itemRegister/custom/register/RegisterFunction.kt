@@ -1,4 +1,4 @@
-package me.syari.ss.item.custom.register
+package me.syari.ss.item.itemRegister.custom.register
 
 interface RegisterFunction {
     fun register()

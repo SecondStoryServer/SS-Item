@@ -8,11 +8,11 @@ import me.syari.ss.core.sql.Database.Companion.asSetNotNull
 import me.syari.ss.core.sql.Database.Companion.nextOrNull
 import me.syari.ss.core.sql.MySQL
 import me.syari.ss.item.chest.ItemChest
-import me.syari.ss.item.compass.CompassItem
-import me.syari.ss.item.equip.EnhancedEquipItem
-import me.syari.ss.item.equip.EquipItem
-import me.syari.ss.item.general.GeneralItem
-import me.syari.ss.item.general.GeneralItemWithAmount
+import me.syari.ss.item.itemRegister.compass.CompassItem
+import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem
+import me.syari.ss.item.itemRegister.equip.EquipItem
+import me.syari.ss.item.itemRegister.general.GeneralItem
+import me.syari.ss.item.itemRegister.general.GeneralItemWithAmount
 import java.sql.Statement
 import java.util.UUID
 

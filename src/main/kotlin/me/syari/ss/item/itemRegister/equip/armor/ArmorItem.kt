@@ -1,11 +1,11 @@
-package me.syari.ss.item.equip.armor
+package me.syari.ss.item.itemRegister.equip.armor
 
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.ItemRarity
-import me.syari.ss.item.custom.ItemType
-import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhance
-import me.syari.ss.item.equip.EquipItem
+import me.syari.ss.item.itemRegister.custom.ItemType
+import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem.Companion.getEnhance
+import me.syari.ss.item.itemRegister.equip.EquipItem
 import org.bukkit.Material
 import java.util.UUID
 

@@ -1,9 +1,9 @@
-package me.syari.ss.item.equip.weapon.melee
+package me.syari.ss.item.itemRegister.equip.weapon.melee
 
 import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.item.ItemRarity
-import me.syari.ss.item.equip.weapon.WeaponItem
-import me.syari.ss.item.equip.weapon.WeaponType
+import me.syari.ss.item.itemRegister.equip.weapon.WeaponItem
+import me.syari.ss.item.itemRegister.equip.weapon.WeaponType
 import org.bukkit.Material
 
 class MeleeItem(

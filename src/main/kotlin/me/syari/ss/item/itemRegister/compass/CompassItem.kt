@@ -1,9 +1,9 @@
-package me.syari.ss.item.compass
+package me.syari.ss.item.itemRegister.compass
 
 import me.syari.ss.item.ItemRarity
-import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.custom.ItemType
-import me.syari.ss.item.custom.register.ItemRegister
+import me.syari.ss.item.itemRegister.custom.CustomItem
+import me.syari.ss.item.itemRegister.custom.ItemType
+import me.syari.ss.item.itemRegister.custom.register.ItemRegister
 import org.bukkit.Location
 import org.bukkit.Material
 

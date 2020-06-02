@@ -1,4 +1,4 @@
-package me.syari.ss.item.general
+package me.syari.ss.item.itemRegister.general
 
 data class GeneralItemWithAmount(
     val data: GeneralItem, var amount: Int

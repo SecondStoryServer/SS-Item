@@ -2,12 +2,12 @@ package me.syari.ss.item
 
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.auto.OnEnable
-import me.syari.ss.item.compass.CompassItem
-import me.syari.ss.item.custom.register.ItemRegister
-import me.syari.ss.item.custom.register.RegisterFunction
-import me.syari.ss.item.equip.EquipItem
-import me.syari.ss.item.general.GeneralItem
-import me.syari.ss.item.general.potion.HealPotion
+import me.syari.ss.item.itemRegister.compass.CompassItem
+import me.syari.ss.item.itemRegister.custom.register.ItemRegister
+import me.syari.ss.item.itemRegister.custom.register.RegisterFunction
+import me.syari.ss.item.itemRegister.equip.EquipItem
+import me.syari.ss.item.itemRegister.general.GeneralItem
+import me.syari.ss.item.itemRegister.general.potion.HealPotion
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main: JavaPlugin() {

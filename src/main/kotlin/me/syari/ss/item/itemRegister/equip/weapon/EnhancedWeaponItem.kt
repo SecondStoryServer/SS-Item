@@ -1,11 +1,11 @@
-package me.syari.ss.item.equip.weapon
+package me.syari.ss.item.itemRegister.equip.weapon
 
 import me.syari.ss.battle.status.OnDamageStatus
 import me.syari.ss.battle.status.StatusType
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.battle.status.player.StatusChange
 import me.syari.ss.core.item.CustomItemStack
-import me.syari.ss.item.equip.EnhancedEquipItem
+import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier

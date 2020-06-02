@@ -1,7 +1,7 @@
-package me.syari.ss.item.general
+package me.syari.ss.item.itemRegister.general
 
-import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.custom.register.ItemRegister
+import me.syari.ss.item.itemRegister.custom.CustomItem
+import me.syari.ss.item.itemRegister.custom.register.ItemRegister
 
 interface GeneralItem: CustomItem, Comparable<GeneralItem> {
     val sortNumber: Int

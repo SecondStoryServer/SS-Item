@@ -1,12 +1,12 @@
-package me.syari.ss.item.general.potion
+package me.syari.ss.item.itemRegister.general.potion
 
 import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.ItemRarity
-import me.syari.ss.item.custom.ClickableItem
-import me.syari.ss.item.custom.ItemType
-import me.syari.ss.item.custom.register.RegisterFunction
-import me.syari.ss.item.general.GeneralItem
+import me.syari.ss.item.itemRegister.custom.ClickableItem
+import me.syari.ss.item.itemRegister.custom.ItemType
+import me.syari.ss.item.itemRegister.custom.register.RegisterFunction
+import me.syari.ss.item.itemRegister.general.GeneralItem
 import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.entity.Player

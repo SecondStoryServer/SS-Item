@@ -1,7 +1,7 @@
-package me.syari.ss.item.equip.armor
+package me.syari.ss.item.itemRegister.equip.armor
 
 import me.syari.ss.battle.status.StatusType
-import me.syari.ss.item.equip.EnhancedEquipItem
+import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem
 import java.util.UUID
 
 class EnhancedArmorItem(

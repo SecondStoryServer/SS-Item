@@ -1,6 +1,6 @@
-package me.syari.ss.item.custom
+package me.syari.ss.item.itemRegister.custom
 
-import me.syari.ss.item.equip.weapon.WeaponType
+import me.syari.ss.item.itemRegister.equip.weapon.WeaponType
 import org.bukkit.ChatColor
 
 sealed class ItemType(val color: ChatColor, val display: String) {

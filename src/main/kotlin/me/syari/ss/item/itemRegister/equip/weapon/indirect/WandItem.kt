@@ -1,4 +1,4 @@
-package me.syari.ss.item.equip.weapon.indirect
+package me.syari.ss.item.itemRegister.equip.weapon.indirect
 
 import me.syari.ss.battle.damage.DamageCalculator
 import me.syari.ss.battle.equipment.ElementType
@@ -6,10 +6,10 @@ import me.syari.ss.battle.status.EntityStatus
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.core.particle.CustomParticle
 import me.syari.ss.item.ItemRarity
-import me.syari.ss.item.custom.ClickableItem
-import me.syari.ss.item.equip.weapon.EnhancedWeaponItem.Companion.getAttackSpeedCoolDownTick
-import me.syari.ss.item.equip.weapon.WeaponItem
-import me.syari.ss.item.equip.weapon.WeaponType
+import me.syari.ss.item.itemRegister.custom.ClickableItem
+import me.syari.ss.item.itemRegister.equip.weapon.EnhancedWeaponItem.Companion.getAttackSpeedCoolDownTick
+import me.syari.ss.item.itemRegister.equip.weapon.WeaponItem
+import me.syari.ss.item.itemRegister.equip.weapon.WeaponType
 import org.bukkit.Material
 import org.bukkit.entity.Player
 

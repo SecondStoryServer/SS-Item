@@ -1,7 +1,7 @@
-package me.syari.ss.item.custom.register
+package me.syari.ss.item.itemRegister.custom.register
 
 import me.syari.ss.core.item.CustomItemStack
-import me.syari.ss.item.custom.CustomItem
+import me.syari.ss.item.itemRegister.custom.CustomItem
 
 open class ItemRegister<T: CustomItem> {
     protected val idToList = mutableMapOf<String, T>()

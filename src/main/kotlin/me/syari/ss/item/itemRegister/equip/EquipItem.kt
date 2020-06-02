@@ -1,8 +1,8 @@
-package me.syari.ss.item.equip
+package me.syari.ss.item.itemRegister.equip
 
 import me.syari.ss.core.item.CustomItemStack
-import me.syari.ss.item.custom.CustomItem
-import me.syari.ss.item.custom.register.ItemRegister
+import me.syari.ss.item.itemRegister.custom.CustomItem
+import me.syari.ss.item.itemRegister.custom.register.ItemRegister
 import java.util.UUID
 
 interface EquipItem: CustomItem, Comparable<EquipItem> {
