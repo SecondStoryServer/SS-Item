@@ -9,7 +9,7 @@ interface EquipItem: CustomItem, Comparable<EquipItem> {
     val sortNumber: Int
 
     fun getEnhanced(item: CustomItemStack): EnhancedEquipItem {
-        return EnhancedEquipItem(this, getEnhance(item))
+        return EnhancedEquipItem(this, null, getEnhance(item))
     }
 
     override fun register() {

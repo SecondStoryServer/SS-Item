@@ -14,6 +14,7 @@ import me.syari.ss.item.equip.EquipItem
 import me.syari.ss.item.general.GeneralItem
 import me.syari.ss.item.general.GeneralItemWithAmount
 import java.sql.Statement
+import java.util.UUID
 
 object DatabaseConnector: OnEnable {
     override fun onEnable() {
@@ -193,6 +194,7 @@ object DatabaseConnector: OnEnable {
                         CREATE TABLE IF NOT EXISTS EquipItemChest(
                             UUID VARCHAR(36),
                             ItemID VARCHAR(255),
+                            ItemUUID VARCHAR(36),
                             Enhance INT
                         );
                     """.trimIndent()
@@ -203,13 +205,14 @@ object DatabaseConnector: OnEnable {
                 return sql?.use {
                     val result = executeQuery(
                         """
-                            SELECT ItemID, Enhance FROM EquipItemChest WHERE UUID = '$uuidPlayer';
+                            SELECT ItemID, ItemUUID, Enhance FROM EquipItemChest WHERE UUID = '$uuidPlayer';
                         """.trimIndent()
                     )
                     result.asListNotNull {
                         EquipItem.from(result.getString(1))?.let { item ->
-                            val enhance = result.getInt(2)
-                            EnhancedEquipItem(item, enhance)
+                            val uuid = UUID.fromString(result.getString(2))
+                            val enhance = result.getInt(3)
+                            EnhancedEquipItem(item, uuid, enhance)
                         }
                     }
                 } ?: emptyList()
@@ -222,6 +225,7 @@ object DatabaseConnector: OnEnable {
                             INSERT INTO CompassItemChest VALUE (
                                 '$uuidPlayer',
                                 '${item.data.id}',
+                                '${item.uuid}',
                                 ${item.enhance}
                             );
                         """.trimIndent()
@@ -237,9 +241,7 @@ object DatabaseConnector: OnEnable {
                                 WHERE
                                     UUID = '$uuidPlayer'
                                 AND
-                                    ItemID = '${item.data.id}'
-                                AND
-                                    Enhance = ${item.enhance}
+                                    ItemUUID = '${item.uuid}'
                             LIMIT 1;
                         """.trimIndent()
                     )
@@ -250,7 +252,7 @@ object DatabaseConnector: OnEnable {
                 sql?.use {
                     executeUpdate(
                         """
-                        DELETE FROM CompassItemChest WHERE UUID = '$uuidPlayer' LIMIT 1;
+                        DELETE FROM CompassItemChest WHERE UUID = '$uuidPlayer';
                     """.trimIndent()
                     )
                 }

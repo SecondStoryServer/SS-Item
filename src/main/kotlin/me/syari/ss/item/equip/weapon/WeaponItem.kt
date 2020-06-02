@@ -24,7 +24,7 @@ interface WeaponItem: EquipItem {
         get() = 1
 
     override fun getEnhanced(item: CustomItemStack): EnhancedWeaponItem {
-        return EnhancedWeaponItem(this, getEnhance(item))
+        return EnhancedWeaponItem(this, null, getEnhance(item))
     }
 
     override fun compareTo(other: EquipItem): Int {

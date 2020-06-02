@@ -4,9 +4,10 @@ import me.syari.ss.battle.status.StatusType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
 import org.bukkit.persistence.PersistentDataType
+import java.util.UUID
 
 open class EnhancedEquipItem internal constructor(
-    open val data: EquipItem, val enhance: Int
+    open val data: EquipItem, val uuid: UUID?, val enhance: Int
 ) {
     open val statusChange = mapOf<StatusType, Pair<String, Float>>()
 
