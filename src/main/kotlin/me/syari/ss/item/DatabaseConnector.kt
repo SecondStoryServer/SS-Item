@@ -98,8 +98,7 @@ object DatabaseConnector: OnEnable {
                             WHERE
                                 UUID = '$uuidPlayer'
                             AND
-                                ChestName = '${chest.sizeColumnName}'
-                            LIMIT 1;
+                                ChestName = '${chest.sizeColumnName}';
                         """.trimIndent()
                     )
                 }
@@ -180,7 +179,7 @@ object DatabaseConnector: OnEnable {
                 sql?.use {
                     executeUpdate(
                         """
-                        DELETE FROM GeneralItemChest WHERE UUID = '$uuidPlayer' LIMIT 1;
+                        DELETE FROM GeneralItemChest WHERE UUID = '$uuidPlayer';
                     """.trimIndent()
                     )
                 }
@@ -317,7 +316,7 @@ object DatabaseConnector: OnEnable {
                 sql?.use {
                     executeUpdate(
                         """
-                        DELETE FROM CompassItemChest WHERE UUID = '$uuidPlayer' LIMIT 1;
+                        DELETE FROM CompassItemChest WHERE UUID = '$uuidPlayer';
                     """.trimIndent()
                     )
                 }
@@ -371,7 +370,7 @@ object DatabaseConnector: OnEnable {
             sql?.use {
                 executeUpdate(
                     """
-                        DELETE FROM VanillaInventory WHERE UUID = '$uuidPlayer' LIMIT 1;
+                        DELETE FROM VanillaInventory WHERE UUID = '$uuidPlayer';
                     """.trimIndent()
                 )
             }
