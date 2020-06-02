@@ -3,6 +3,7 @@ package me.syari.ss.item.holder
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.itemRegister.custom.CustomItem
 import me.syari.ss.item.itemRegister.equip.armor.ArmorItem
+import me.syari.ss.item.itemRegister.equip.weapon.WeaponItem
 
 data class ItemHolder(val uuidPlayer: UUIDPlayer) {
     private val itemList = mutableMapOf<Int, CustomItem>()
@@ -29,6 +30,8 @@ data class ItemHolder(val uuidPlayer: UUIDPlayer) {
                 itemList.remove(OFFHAND_SLOT)
             }
         }
+
+    var extraWeaponItem = listOf<WeaponItem>()
 
     private val armorList = mutableMapOf<ArmorSlot, ArmorItem>()
 
