@@ -11,9 +11,13 @@ data class ItemHolder(val uuidPlayer: UUIDPlayer) {
         return if (index in 0..8) itemList[index] else throw IndexOutOfBoundsException("Index: $index, Range: 0..8")
     }
 
-    fun setHotBarItem(index: Int, item: CustomItem) {
+    fun setHotBarItem(index: Int, item: CustomItem?) {
         if (index !in 0..8) throw IndexOutOfBoundsException("Index: $index, Range: 0..8")
-        itemList[index] = item
+        if (item != null) {
+            itemList[index] = item
+        } else {
+            itemList.remove(index)
+        }
     }
 
     var offHandItem: CustomItem?
@@ -30,6 +34,14 @@ data class ItemHolder(val uuidPlayer: UUIDPlayer) {
 
     fun getArmorItem(armorSlot: ArmorSlot): ArmorItem? {
         return armorList[armorSlot]
+    }
+
+    fun setArmorItem(armorSlot: ArmorSlot, item: ArmorItem?) {
+        if (item != null) {
+            armorList[armorSlot] = item
+        } else {
+            armorList.remove(armorSlot)
+        }
     }
 
     enum class ArmorSlot(val slot: Int) {
