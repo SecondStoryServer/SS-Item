@@ -3,6 +3,7 @@ package me.syari.ss.item.holder
 import me.syari.ss.core.player.UUIDPlayer
 import me.syari.ss.item.DatabaseConnector
 import me.syari.ss.item.itemRegister.custom.CustomItem
+import me.syari.ss.item.itemRegister.equip.armor.ArmorItem
 import me.syari.ss.item.itemRegister.equip.armor.EnhancedArmorItem
 import me.syari.ss.item.itemRegister.equip.weapon.EnhancedWeaponItem
 import org.bukkit.OfflinePlayer
@@ -55,11 +56,15 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
         }
     }
 
-    enum class ArmorSlot(val slot: Int, val vanillaSlot: Int) {
-        BOOTS(3, 36),
-        LEGGINGS(2, 37),
-        CHESTPLATE(1, 38),
-        HELMET(0, 39);
+    enum class ArmorSlot(val slot: Int, val vanillaSlot: Int, val armorType: ArmorItem.ArmorType) {
+        BOOTS(3, 36, ArmorItem.ArmorType.BOOTS),
+        LEGGINGS(2, 37, ArmorItem.ArmorType.LEGGINGS),
+        CHESTPLATE(1, 38, ArmorItem.ArmorType.CHESTPLATE),
+        HELMET(0, 39, ArmorItem.ArmorType.HELMET);
+
+        fun isAvailable(armorItem: ArmorItem): Boolean {
+            return armorType == armorItem.armorType
+        }
 
         companion object {
             fun getBySlot(index: Int): ArmorSlot? {

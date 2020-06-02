@@ -20,7 +20,7 @@ class ArmorItem(
 ): EquipItem {
     override val itemType = ItemType.Armor
     override val sortNumber = 0
-    private val armorType = ArmorType.from(material)
+    val armorType = ArmorType.from(material)
 
     override fun getEnhanced(item: CustomItemStack): EnhancedArmorItem {
         return getEnhanced(null, getEnhance(item))
@@ -38,7 +38,7 @@ class ArmorItem(
         }
     }
 
-    private enum class ArmorType {
+    enum class ArmorType {
         BOOTS,
         LEGGINGS,
         CHESTPLATE,
