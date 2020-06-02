@@ -3,10 +3,6 @@ package me.syari.ss.item.equip
 import me.syari.ss.battle.status.StatusType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.Main.Companion.itemPlugin
-import me.syari.ss.item.equip.armor.ArmorItem
-import me.syari.ss.item.equip.armor.EnhancedArmorItem
-import me.syari.ss.item.equip.weapon.EnhancedWeaponItem
-import me.syari.ss.item.equip.weapon.WeaponItem
 import org.bukkit.persistence.PersistentDataType
 import java.util.UUID
 
@@ -41,14 +37,6 @@ open class EnhancedEquipItem protected constructor(
 
         fun getEnhance(item: CustomItemStack): Int {
             return item.getPersistentData(itemPlugin)?.get(enhancePersistentDataKey, PersistentDataType.INTEGER) ?: 0
-        }
-
-        fun from(equipItem: EquipItem, uuid: UUID?, enhance: Int): EnhancedEquipItem {
-            return when (equipItem) {
-                is WeaponItem -> EnhancedWeaponItem(equipItem, uuid, enhance)
-                is ArmorItem -> EnhancedArmorItem(equipItem, uuid, enhance)
-                else -> EnhancedEquipItem(equipItem, uuid, enhance)
-            }
         }
     }
 }

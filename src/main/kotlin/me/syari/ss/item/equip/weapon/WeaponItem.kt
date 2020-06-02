@@ -11,6 +11,7 @@ import me.syari.ss.item.equip.weapon.indirect.HarpItem
 import me.syari.ss.item.equip.weapon.indirect.WandItem
 import me.syari.ss.item.equip.weapon.melee.MeleeItem
 import org.bukkit.Material
+import java.util.UUID
 
 interface WeaponItem: EquipItem {
     val damageElementType: ElementType
@@ -24,7 +25,11 @@ interface WeaponItem: EquipItem {
         get() = 1
 
     override fun getEnhanced(item: CustomItemStack): EnhancedWeaponItem {
-        return EnhancedWeaponItem(this, null, getEnhance(item))
+        return getEnhanced(null, getEnhance(item))
+    }
+
+    override fun getEnhanced(uuid: UUID?, enhance: Int): EnhancedWeaponItem {
+        return EnhancedWeaponItem(this, uuid, enhance)
     }
 
     override fun compareTo(other: EquipItem): Int {

@@ -4,9 +4,10 @@ import me.syari.ss.battle.equipment.ElementType
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.ItemRarity
 import me.syari.ss.item.custom.ItemType
-import me.syari.ss.item.equip.EnhancedEquipItem
+import me.syari.ss.item.equip.EnhancedEquipItem.Companion.getEnhance
 import me.syari.ss.item.equip.EquipItem
 import org.bukkit.Material
+import java.util.UUID
 
 class ArmorItem(
     override val id: String,
@@ -22,7 +23,11 @@ class ArmorItem(
     private val armorType = ArmorType.from(material)
 
     override fun getEnhanced(item: CustomItemStack): EnhancedArmorItem {
-        return EnhancedArmorItem(this, null, EnhancedEquipItem.getEnhance(item))
+        return getEnhanced(null, getEnhance(item))
+    }
+
+    override fun getEnhanced(uuid: UUID?, enhance: Int): EnhancedArmorItem {
+        return EnhancedArmorItem(this, uuid, enhance)
     }
 
     override fun compareTo(other: EquipItem): Int {
