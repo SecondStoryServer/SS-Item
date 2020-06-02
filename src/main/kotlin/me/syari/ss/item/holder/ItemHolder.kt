@@ -37,7 +37,7 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
             setNormalItem(OFFHAND_SLOT, value)
         }
 
-    var extraWeaponItem = listOf<EnhancedWeaponItem>()
+    val extraWeaponItem = mutableMapOf<Int, EnhancedWeaponItem>()
 
     private val armorList = mutableMapOf<ArmorSlot, EnhancedArmorItem>()
 

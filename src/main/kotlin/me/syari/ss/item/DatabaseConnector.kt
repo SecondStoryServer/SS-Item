@@ -408,7 +408,6 @@ object DatabaseConnector: OnEnable {
                         val typeName = result.getString(1)
                         val id = result.getString(2)
                         val slot = result.getInt(3)
-                        val newExtraWeaponItem = mutableMapOf<Int, EnhancedWeaponItem>()
                         when (ItemHolder.Type.valueOf(typeName)) {
                             ItemHolder.Type.Normal -> {
                                 val item = CustomItem.from(id) ?: continue@loop
@@ -423,11 +422,10 @@ object DatabaseConnector: OnEnable {
                                     setArmorItem(armorSlot, item)
                                 } else {
                                     if (item !is EnhancedWeaponItem) continue@loop
-                                    newExtraWeaponItem[slot] = item
+                                    extraWeaponItem[slot] = item
                                 }
                             }
                         }
-                        extraWeaponItem = newExtraWeaponItem.toSortedMap().values.toList()
                     }
                 }
             }
