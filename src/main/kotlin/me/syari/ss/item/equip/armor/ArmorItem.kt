@@ -1,8 +1,10 @@
 package me.syari.ss.item.equip.armor
 
 import me.syari.ss.battle.equipment.ElementType
+import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.item.ItemRarity
 import me.syari.ss.item.custom.ItemType
+import me.syari.ss.item.equip.EnhancedEquipItem
 import me.syari.ss.item.equip.EquipItem
 import org.bukkit.Material
 
@@ -18,6 +20,10 @@ class ArmorItem(
     override val itemType = ItemType.Armor
     override val sortNumber = 0
     private val armorType = ArmorType.from(material)
+
+    override fun getEnhanced(item: CustomItemStack): EnhancedArmorItem {
+        return EnhancedArmorItem(this, null, EnhancedEquipItem.getEnhance(item))
+    }
 
     override fun compareTo(other: EquipItem): Int {
         return if (other is ArmorItem) {

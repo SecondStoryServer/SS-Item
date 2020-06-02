@@ -212,7 +212,7 @@ object DatabaseConnector: OnEnable {
                         EquipItem.from(result.getString(1))?.let { item ->
                             val uuid = UUID.fromString(result.getString(2))
                             val enhance = result.getInt(3)
-                            EnhancedEquipItem(item, uuid, enhance)
+                            EnhancedEquipItem.from(item, uuid, enhance)
                         }
                     }
                 } ?: emptyList()
