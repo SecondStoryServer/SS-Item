@@ -9,6 +9,7 @@ import me.syari.ss.item.itemRegister.equip.armor.EnhancedArmorItem
 import me.syari.ss.item.itemRegister.equip.weapon.EnhancedWeaponItem
 import me.syari.ss.item.itemRegister.general.GeneralItem
 import me.syari.ss.item.itemRegister.general.GeneralItemWithAmount
+import java.util.UUID
 
 interface ItemChest {
     val uuidPlayer: UUIDPlayer
@@ -121,6 +122,7 @@ interface ItemChest {
         override val sizeColumnName = "Equip"
         override val defaultMaxPage = 2
         private var itemList = DatabaseConnector.Chest.Equip.get(uuidPlayer).toMutableList()
+        private val itemMap = itemList.mapNotNull { item -> item.uuid?.let { it to item } }.toMap().toMutableMap()
         var sortType: SortType = SortType.Type
             set(value) {
                 if (field == value) return
@@ -143,18 +145,28 @@ interface ItemChest {
 
         fun add(item: EnhancedEquipItem) {
             if (isSorted) isSorted = false
-            itemList.add(item)
-            DatabaseConnector.Chest.Equip.add(uuidPlayer, item)
+            item.uuid?.let { uuid ->
+                itemList.add(item)
+                itemMap[uuid] = item
+                DatabaseConnector.Chest.Equip.add(uuidPlayer, item)
+            }
         }
 
         fun remove(item: EnhancedEquipItem) {
             if (isSorted) isSorted = false
-            itemList.remove(item)
-            DatabaseConnector.Chest.Equip.remove(uuidPlayer, item)
+            item.uuid?.let { uuid ->
+                itemList.remove(item)
+                itemMap.remove(uuid)
+                DatabaseConnector.Chest.Equip.remove(uuidPlayer, item)
+            }
         }
 
         fun getList(page: Int): List<EnhancedEquipItem>? {
             return itemList.slice(page, maxPage)
+        }
+
+        fun getItem(uuid: UUID): EnhancedEquipItem? {
+            return itemMap[uuid]
         }
 
         interface SortType {
