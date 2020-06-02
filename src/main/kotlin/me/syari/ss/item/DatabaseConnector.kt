@@ -433,11 +433,4 @@ object DatabaseConnector: OnEnable {
             }
         }
     }
-
-    fun main() {
-        val map = mutableMapOf<Int, Int>()
-        map[2] = 5
-        map[1] = 3
-        println(map.toList())
-    }
 }
