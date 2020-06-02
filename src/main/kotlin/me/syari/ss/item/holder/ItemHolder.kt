@@ -55,11 +55,11 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
         }
     }
 
-    enum class ArmorSlot(val slot: Int) {
-        BOOTS(36),
-        LEGGINGS(37),
-        CHESTPLATE(38),
-        HELMET(39);
+    enum class ArmorSlot(val slot: Int, val vanillaSlot: Int) {
+        BOOTS(3, 36),
+        LEGGINGS(2, 37),
+        CHESTPLATE(1, 38),
+        HELMET(0, 39);
 
         companion object {
             fun getBySlot(index: Int): ArmorSlot? {
