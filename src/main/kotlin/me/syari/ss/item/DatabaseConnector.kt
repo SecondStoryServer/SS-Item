@@ -8,7 +8,9 @@ import me.syari.ss.core.sql.Database.Companion.asSetNotNull
 import me.syari.ss.core.sql.Database.Companion.nextOrNull
 import me.syari.ss.core.sql.MySQL
 import me.syari.ss.item.chest.ItemChest
+import me.syari.ss.item.holder.ItemHolder
 import me.syari.ss.item.itemRegister.compass.CompassItem
+import me.syari.ss.item.itemRegister.custom.CustomItem
 import me.syari.ss.item.itemRegister.equip.EnhancedEquipItem
 import me.syari.ss.item.itemRegister.equip.EquipItem
 import me.syari.ss.item.itemRegister.general.GeneralItem
@@ -373,6 +375,53 @@ object DatabaseConnector: OnEnable {
                         DELETE FROM VanillaInventory WHERE UUID = '$uuidPlayer';
                     """.trimIndent()
                 )
+            }
+        }
+    }
+
+    object Holder {
+        fun createTable(statement: Statement) {
+            statement.executeUpdate(
+                """
+                    CREATE TABLE IF NOT EXISTS ItemHolder(
+                        UUID VARCHAR(36),
+                        Type VARCHAR(255),
+                        ID VARCHAR(255),
+                        Slot TINYINT
+                    );
+                """.trimIndent()
+            )
+        }
+
+        fun get(uuidPlayer: UUIDPlayer): ItemHolder {
+            return ItemHolder(uuidPlayer).apply {
+                sql?.use {
+                    val result = executeQuery(
+                        """
+                            SELECT Type, ID, Slot FROM ItemHolder WHERE UUID = '$uuidPlayer';
+                        """.trimIndent()
+                    )
+                    while (result.next()) {
+                        val typeName = result.getString(1)
+                        val id = result.getString(2)
+                        val slot = result.getInt(3)
+                        when (ItemHolder.Type.valueOf(typeName)) {
+                            ItemHolder.Type.Normal -> {
+                                val item = CustomItem.from(id)
+                                if (item != null) {
+                                    setNormalItem(slot, item)
+                                }
+                            }
+                            ItemHolder.Type.Armor -> {
+                                val armorSlot = ItemHolder.ArmorSlot.getBySlot(slot)
+
+                            }
+                            ItemHolder.Type.ExtraWeapon -> {
+
+                            }
+                        }
+                    }
+                }
             }
         }
     }
