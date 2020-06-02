@@ -10,6 +10,9 @@ import org.bukkit.OfflinePlayer
 data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
     private val itemList = mutableMapOf<Int, CustomItem>()
 
+    val allNormalItem
+        get() = itemList.toMap()
+
     internal fun setNormalItem(index: Int, item: CustomItem?) {
         if (item != null) {
             itemList[index] = item
@@ -36,6 +39,9 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
     var extraWeaponItem = listOf<EnhancedWeaponItem>()
 
     private val armorList = mutableMapOf<ArmorSlot, EnhancedArmorItem>()
+
+    val allArmorItem
+        get() = armorList.toMap()
 
     fun getArmorItem(armorSlot: ArmorSlot): EnhancedArmorItem? {
         return armorList[armorSlot]
