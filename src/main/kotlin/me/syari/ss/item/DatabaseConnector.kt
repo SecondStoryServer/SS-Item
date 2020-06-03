@@ -422,7 +422,7 @@ object DatabaseConnector: OnEnable {
                                     setArmorItem(armorSlot, item)
                                 } else {
                                     if (item !is EnhancedWeaponItem) continue@loop
-                                    extraWeaponItem[slot] = item
+                                    setExtraWeaponItem(slot, item)
                                 }
                             }
                         }

@@ -37,7 +37,23 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
             setNormalItem(OFFHAND_SLOT, value)
         }
 
-    val extraWeaponItem = mutableMapOf<Int, EnhancedWeaponItem>()
+    private val extraWeaponItem = mutableMapOf<Int, EnhancedWeaponItem>()
+
+    val allExtraWeaponItem
+        get() = extraWeaponItem.toMap()
+
+    fun getExtraWeaponItem(index: Int): EnhancedWeaponItem? {
+        return if (index in 0..3) extraWeaponItem[index] else throw IndexOutOfBoundsException("Index: $index, Range: 0..3")
+    }
+
+    fun setExtraWeaponItem(index: Int, item: EnhancedWeaponItem?) {
+        if (index !in 0..3) throw IndexOutOfBoundsException("Index: $index, Range: 0..3")
+        if (item != null) {
+            extraWeaponItem[index] = item
+        } else {
+            extraWeaponItem.remove(index)
+        }
+    }
 
     private val armorList = mutableMapOf<ArmorSlot, EnhancedArmorItem>()
 
