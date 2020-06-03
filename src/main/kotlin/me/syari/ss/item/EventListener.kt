@@ -9,7 +9,7 @@ import me.syari.ss.battle.status.player.PlayerStatus.Companion.status
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.item.CustomItemStack
 import me.syari.ss.core.player.UUIDPlayer
-import me.syari.ss.core.scheduler.CustomScheduler.runLater
+import me.syari.ss.core.scheduler.CreateScheduler.runLater
 import me.syari.ss.item.Main.Companion.itemPlugin
 import me.syari.ss.item.itemRegister.custom.ClickableItem
 import me.syari.ss.item.itemRegister.custom.CustomItem
