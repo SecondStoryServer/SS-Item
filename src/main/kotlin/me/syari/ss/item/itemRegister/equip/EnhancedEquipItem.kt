@@ -7,7 +7,9 @@ import org.bukkit.persistence.PersistentDataType
 import java.util.UUID
 
 open class EnhancedEquipItem protected constructor(
-    open val data: EquipItem, val uuid: UUID?, val enhance: Int
+    open val data: EquipItem,
+    val uuid: UUID?,
+    val enhance: Int
 ) {
     open val statusChange = mapOf<StatusType, Pair<String, Float>>()
 

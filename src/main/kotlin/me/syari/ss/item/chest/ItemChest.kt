@@ -63,21 +63,33 @@ interface ItemChest {
             return get(item)?.amount
         }
 
-        fun getAmount(item: GeneralItem, default: Int): Int {
+        fun getAmount(
+            item: GeneralItem,
+            default: Int
+        ): Int {
             return getAmount(item) ?: default
         }
 
-        fun add(item: GeneralItem, amount: Int) {
+        fun add(
+            item: GeneralItem,
+            amount: Int
+        ) {
             val totalAmount = getAmount(item, 0) + amount
             set(item, totalAmount)
         }
 
-        fun remove(item: GeneralItem, amount: Int) {
+        fun remove(
+            item: GeneralItem,
+            amount: Int
+        ) {
             val totalAmount = getAmount(item, 0) - amount
             set(item, totalAmount)
         }
 
-        fun set(item: GeneralItem, amount: Int) {
+        fun set(
+            item: GeneralItem,
+            amount: Int
+        ) {
             val itemWithAmount = get(item)
             if (0 < amount) {
                 (itemWithAmount ?: put(item)).amount = amount
@@ -93,7 +105,10 @@ interface ItemChest {
         }
 
         interface SortType {
-            fun sort(itemList: List<GeneralItemWithAmount>, isReverse: Boolean): List<GeneralItemWithAmount>
+            fun sort(
+                itemList: List<GeneralItemWithAmount>,
+                isReverse: Boolean
+            ): List<GeneralItemWithAmount>
 
             val isType
                 get() = this == Type
@@ -102,7 +117,8 @@ interface ItemChest {
 
             object Type: SortType {
                 override fun sort(
-                    itemList: List<GeneralItemWithAmount>, isReverse: Boolean
+                    itemList: List<GeneralItemWithAmount>,
+                    isReverse: Boolean
                 ): List<GeneralItemWithAmount> {
                     return itemList.sortedBy(isReverse) { it.data }
                 }
@@ -110,7 +126,8 @@ interface ItemChest {
 
             object Rarity: SortType {
                 override fun sort(
-                    itemList: List<GeneralItemWithAmount>, isReverse: Boolean
+                    itemList: List<GeneralItemWithAmount>,
+                    isReverse: Boolean
                 ): List<GeneralItemWithAmount> {
                     return itemList.sortedBy(isReverse) { it.data.rarity }
                 }
@@ -171,7 +188,8 @@ interface ItemChest {
 
         interface SortType {
             fun sort(
-                itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                itemList: List<EnhancedEquipItem>,
+                isReverse: Boolean
             ): List<EnhancedEquipItem>
 
             val isType
@@ -185,7 +203,8 @@ interface ItemChest {
 
             object Type: SortType {
                 override fun sort(
-                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                    itemList: List<EnhancedEquipItem>,
+                    isReverse: Boolean
                 ): List<EnhancedEquipItem> {
                     val groupByType = itemList.groupBy { it.data }
                     return groupByType.values.map { Rarity.sort(it, isReverse) }.flatten()
@@ -194,7 +213,8 @@ interface ItemChest {
 
             object Enhance: SortType {
                 override fun sort(
-                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                    itemList: List<EnhancedEquipItem>,
+                    isReverse: Boolean
                 ): List<EnhancedEquipItem> {
                     return itemList.sortedBy(isReverse) { it.enhance }
                 }
@@ -202,7 +222,8 @@ interface ItemChest {
 
             object Rarity: SortType {
                 override fun sort(
-                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                    itemList: List<EnhancedEquipItem>,
+                    isReverse: Boolean
                 ): List<EnhancedEquipItem> {
                     return itemList.sortedBy(isReverse) { it.data.rarity }
                 }
@@ -210,7 +231,8 @@ interface ItemChest {
 
             object Status: SortType {
                 override fun sort(
-                    itemList: List<EnhancedEquipItem>, isReverse: Boolean
+                    itemList: List<EnhancedEquipItem>,
+                    isReverse: Boolean
                 ): List<EnhancedEquipItem> {
                     val weaponList = mutableListOf<EnhancedWeaponItem>()
                     val armorList = mutableListOf<EnhancedArmorItem>()
@@ -257,7 +279,10 @@ interface ItemChest {
         }
 
         interface DisplayMode {
-            fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>?
+            fun getList(
+                chest: Compass,
+                page: Int
+            ): Map<CompassItem, Boolean>?
 
             val isBoth
                 get() = this == Both
@@ -265,13 +290,19 @@ interface ItemChest {
                 get() = this == OnlyHave
 
             object Both: DisplayMode {
-                override fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>? {
+                override fun getList(
+                    chest: Compass,
+                    page: Int
+                ): Map<CompassItem, Boolean>? {
                     return allCompass.slice(page, chest.maxPage)?.associate { it to chest.has(it) }
                 }
             }
 
             object OnlyHave: DisplayMode {
-                override fun getList(chest: Compass, page: Int): Map<CompassItem, Boolean>? {
+                override fun getList(
+                    chest: Compass,
+                    page: Int
+                ): Map<CompassItem, Boolean>? {
                     return allCompass.filter { chest.has(it) }.map { it to true }.toMap()
                 }
             }
@@ -279,7 +310,10 @@ interface ItemChest {
     }
 
     private companion object {
-        fun <T> List<T>.slice(page: Int, maxPage: Int?): List<T>? {
+        fun <T> List<T>.slice(
+            page: Int,
+            maxPage: Int?
+        ): List<T>? {
             return when {
                 page < 1 -> slice(1, maxPage)
                 maxPage != null && maxPage < page -> null
@@ -297,14 +331,16 @@ interface ItemChest {
         }
 
         inline fun <T, R: Comparable<R>> MutableList<T>.sortBy(
-            isReverse: Boolean, crossinline selector: (T) -> R?
+            isReverse: Boolean,
+            crossinline selector: (T) -> R?
         ) {
             sortBy(selector)
             if (isReverse) reverse()
         }
 
         inline fun <T, R: Comparable<R>> Iterable<T>.sortedBy(
-            isReverse: Boolean, crossinline selector: (T) -> R?
+            isReverse: Boolean,
+            crossinline selector: (T) -> R?
         ): List<T> {
             return if (isReverse) sortedBy(selector).reversed() else sortedBy(selector)
         }

@@ -10,7 +10,10 @@ open class ItemRegister<T: CustomItem> {
         idToList.clear()
     }
 
-    fun register(id: String, item: T) {
+    fun register(
+        id: String,
+        item: T
+    ) {
         idToList[id] = item
     }
 

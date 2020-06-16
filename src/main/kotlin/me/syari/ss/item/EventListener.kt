@@ -58,7 +58,10 @@ object EventListener: Event {
     private const val arrowShooterStatusMetaDataKey = "ss-item-arrow-shooter-status"
     private const val arrowForceMetaDataKey = "ss-item-arrow-force"
 
-    private fun setProjectileStatus(projectile: Entity, status: OnDamageStatus) {
+    private fun setProjectileStatus(
+        projectile: Entity,
+        status: OnDamageStatus
+    ) {
         val metadataValue = FixedMetadataValue(itemPlugin, status)
         projectile.setMetadata(arrowShooterStatusMetaDataKey, metadataValue)
     }

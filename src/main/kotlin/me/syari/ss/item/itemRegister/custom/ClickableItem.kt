@@ -7,7 +7,11 @@ interface ClickableItem {
     val coolDownTime: Long
     val coolDownType: CoolDownType
 
-    fun onClick(player: Player, item: CustomItemStack, clickType: ClickType): Boolean
+    fun onClick(
+        player: Player,
+        item: CustomItemStack,
+        clickType: ClickType
+    ): Boolean
 
     enum class ClickType {
         Right,

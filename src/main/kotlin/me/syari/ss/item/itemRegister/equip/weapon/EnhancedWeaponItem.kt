@@ -15,10 +15,10 @@ import org.bukkit.inventory.ItemFlag
 import java.util.UUID
 
 class EnhancedWeaponItem(
-    override val data: WeaponItem, uuid: UUID?, enhance: Int
-): EnhancedEquipItem(
-    data, uuid, enhance
-) {
+    override val data: WeaponItem,
+    uuid: UUID?,
+    enhance: Int
+): EnhancedEquipItem(data, uuid, enhance) {
     private val damage = data.damage * enhanceRate
     private val criticalChance = data.criticalChance
     override val statusChange = mapOf(

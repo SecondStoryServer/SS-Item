@@ -17,17 +17,9 @@ class Main: JavaPlugin() {
 
     override fun onEnable() {
         itemPlugin = this
-        ItemRegister.add(
-            GeneralItem, EquipItem, CompassItem
-        )
-        RegisterFunction.add(
-            HealPotion
-        )
-        OnEnable.register(
-            ConfigLoader, DatabaseConnector
-        )
-        Event.register(
-            this, EventListener
-        )
+        ItemRegister.add(GeneralItem, EquipItem, CompassItem)
+        RegisterFunction.add(HealPotion)
+        OnEnable.register(ConfigLoader, DatabaseConnector)
+        Event.register(this, EventListener)
     }
 }

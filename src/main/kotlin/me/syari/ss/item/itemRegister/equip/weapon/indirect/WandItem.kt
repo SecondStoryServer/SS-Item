@@ -28,7 +28,11 @@ class WandItem(
     override val coolDownTime = getAttackSpeedCoolDownTick(attackSpeed)
     override val coolDownType = ClickableItem.CoolDownType.Weapon
 
-    override fun onClick(player: Player, item: CustomItemStack, clickType: ClickableItem.ClickType): Boolean {
+    override fun onClick(
+        player: Player,
+        item: CustomItemStack,
+        clickType: ClickableItem.ClickType
+    ): Boolean {
         if (clickType.isRight) {
             launchLaser(player, item)
             return true
@@ -36,7 +40,10 @@ class WandItem(
         return false
     }
 
-    private fun launchLaser(player: Player, item: CustomItemStack) {
+    private fun launchLaser(
+        player: Player,
+        item: CustomItemStack
+    ) {
         val particle = CustomParticle.RedStone(155, 89, 182, 10, 0.0)
         val maxDistance = 10
         val interDistance = 0.5

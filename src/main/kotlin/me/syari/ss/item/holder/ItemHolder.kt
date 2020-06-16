@@ -14,7 +14,10 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
     val allNormalItem
         get() = itemList.toMap()
 
-    internal fun setNormalItem(index: Int, item: CustomItem?) {
+    internal fun setNormalItem(
+        index: Int,
+        item: CustomItem?
+    ) {
         if (item != null) {
             itemList[index] = item
         } else {
@@ -26,7 +29,10 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
         return if (index in 0..8) itemList[index] else throw IndexOutOfBoundsException("Index: $index, Range: 0..8")
     }
 
-    fun setHotBarItem(index: Int, item: CustomItem?) {
+    fun setHotBarItem(
+        index: Int,
+        item: CustomItem?
+    ) {
         if (index !in 0..8) throw IndexOutOfBoundsException("Index: $index, Range: 0..8")
         setNormalItem(index, item)
     }
@@ -46,7 +52,10 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
         return if (index in 0..3) extraWeaponItem[index] else throw IndexOutOfBoundsException("Index: $index, Range: 0..3")
     }
 
-    fun setExtraWeaponItem(index: Int, item: EnhancedWeaponItem?) {
+    fun setExtraWeaponItem(
+        index: Int,
+        item: EnhancedWeaponItem?
+    ) {
         if (index !in 0..3) throw IndexOutOfBoundsException("Index: $index, Range: 0..3")
         if (item != null) {
             extraWeaponItem[index] = item
@@ -64,7 +73,10 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
         return armorList[armorSlot]
     }
 
-    fun setArmorItem(armorSlot: ArmorSlot, item: EnhancedArmorItem?) {
+    fun setArmorItem(
+        armorSlot: ArmorSlot,
+        item: EnhancedArmorItem?
+    ) {
         if (item != null) {
             armorList[armorSlot] = item
         } else {
@@ -72,7 +84,11 @@ data class ItemHolder(private val uuidPlayer: UUIDPlayer) {
         }
     }
 
-    enum class ArmorSlot(val slot: Int, val vanillaSlot: Int, val armorType: ArmorItem.ArmorType) {
+    enum class ArmorSlot(
+        val slot: Int,
+        val vanillaSlot: Int,
+        val armorType: ArmorItem.ArmorType
+    ) {
         BOOTS(3, 36, ArmorItem.ArmorType.BOOTS),
         LEGGINGS(2, 37, ArmorItem.ArmorType.LEGGINGS),
         CHESTPLATE(1, 38, ArmorItem.ArmorType.CHESTPLATE),

@@ -26,7 +26,10 @@ class ArmorItem(
         return getEnhanced(null, getEnhance(item))
     }
 
-    override fun getEnhanced(uuid: UUID?, enhance: Int): EnhancedArmorItem {
+    override fun getEnhanced(
+        uuid: UUID?,
+        enhance: Int
+    ): EnhancedArmorItem {
         return EnhancedArmorItem(this, uuid, enhance)
     }
 

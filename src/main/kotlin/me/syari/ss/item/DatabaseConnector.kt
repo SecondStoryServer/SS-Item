@@ -55,11 +55,17 @@ object DatabaseConnector: OnEnable {
                 )
             }
 
-            fun get(uuidPlayer: UUIDPlayer, chest: ItemChest): Int? {
+            fun get(
+                uuidPlayer: UUIDPlayer,
+                chest: ItemChest
+            ): Int? {
                 return maxPageCache.getOrPut(uuidPlayer) { getFromSQL(uuidPlayer, chest) }
             }
 
-            private fun getFromSQL(uuidPlayer: UUIDPlayer, chest: ItemChest): Int? {
+            private fun getFromSQL(
+                uuidPlayer: UUIDPlayer,
+                chest: ItemChest
+            ): Int? {
                 return sql?.use {
                     val result = executeQuery(
                         """
@@ -77,7 +83,11 @@ object DatabaseConnector: OnEnable {
                 }
             }
 
-            fun set(uuidPlayer: UUIDPlayer, chest: ItemChest, size: Int?) {
+            fun set(
+                uuidPlayer: UUIDPlayer,
+                chest: ItemChest,
+                size: Int?
+            ) {
                 if (size != null) {
                     sql?.use {
                         executeUpdate(
@@ -95,7 +105,10 @@ object DatabaseConnector: OnEnable {
                 }
             }
 
-            fun delete(uuidPlayer: UUIDPlayer, chest: ItemChest) {
+            fun delete(
+                uuidPlayer: UUIDPlayer,
+                chest: ItemChest
+            ) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -153,7 +166,11 @@ object DatabaseConnector: OnEnable {
                 return GeneralItemWithAmount.from(map)
             }
 
-            fun set(uuidPlayer: UUIDPlayer, item: GeneralItem, amount: Int) {
+            fun set(
+                uuidPlayer: UUIDPlayer,
+                item: GeneralItem,
+                amount: Int
+            ) {
                 sql?.use {
                     if (0 < amount) {
                         executeUpdate(
@@ -222,7 +239,10 @@ object DatabaseConnector: OnEnable {
                 } ?: emptyList()
             }
 
-            fun add(uuidPlayer: UUIDPlayer, item: EnhancedEquipItem) {
+            fun add(
+                uuidPlayer: UUIDPlayer,
+                item: EnhancedEquipItem
+            ) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -237,7 +257,10 @@ object DatabaseConnector: OnEnable {
                 }
             }
 
-            fun remove(uuidPlayer: UUIDPlayer, item: EnhancedEquipItem) {
+            fun remove(
+                uuidPlayer: UUIDPlayer,
+                item: EnhancedEquipItem
+            ) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -289,7 +312,10 @@ object DatabaseConnector: OnEnable {
                 } ?: emptySet()
             }
 
-            fun add(uuidPlayer: UUIDPlayer, item: CompassItem) {
+            fun add(
+                uuidPlayer: UUIDPlayer,
+                item: CompassItem
+            ) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -302,7 +328,10 @@ object DatabaseConnector: OnEnable {
                 }
             }
 
-            fun remove(uuidPlayer: UUIDPlayer, item: CompassItem) {
+            fun remove(
+                uuidPlayer: UUIDPlayer,
+                item: CompassItem
+            ) {
                 sql?.use {
                     executeUpdate(
                         """
@@ -354,7 +383,10 @@ object DatabaseConnector: OnEnable {
             }
         }
 
-        fun setBase64(uuidPlayer: UUIDPlayer, base64: String?) {
+        fun setBase64(
+            uuidPlayer: UUIDPlayer,
+            base64: String?
+        ) {
             if (base64 != null) {
                 sql?.use {
                     executeUpdate(

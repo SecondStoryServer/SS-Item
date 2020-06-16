@@ -28,7 +28,10 @@ interface WeaponItem: EquipItem {
         return getEnhanced(null, getEnhance(item))
     }
 
-    override fun getEnhanced(uuid: UUID?, enhance: Int): EnhancedWeaponItem {
+    override fun getEnhanced(
+        uuid: UUID?,
+        enhance: Int
+    ): EnhancedWeaponItem {
         return EnhancedWeaponItem(this, uuid, enhance)
     }
 
@@ -55,9 +58,7 @@ interface WeaponItem: EquipItem {
         ): WeaponItem {
             return when (weaponType) {
                 WeaponType.Bow -> {
-                    BowItem(
-                        id, material, display, description, rarity, elementType, damage, criticalChance
-                    )
+                    BowItem(id, material, display, description, rarity, elementType, damage, criticalChance)
                 }
                 WeaponType.Wand -> {
                     WandItem(

@@ -10,7 +10,10 @@ interface EquipItem: CustomItem, Comparable<EquipItem> {
 
     fun getEnhanced(item: CustomItemStack): EnhancedEquipItem
 
-    fun getEnhanced(uuid: UUID?, enhance: Int): EnhancedEquipItem
+    fun getEnhanced(
+        uuid: UUID?,
+        enhance: Int
+    ): EnhancedEquipItem
 
     override fun register() {
         register(id, this)
